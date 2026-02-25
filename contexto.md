@@ -16,13 +16,13 @@ O objetivo principal é desenvolver habilidades práticas dos estudantes atravé
 
 O sistema é composto por **duas aplicações** que trabalham de forma integrada:
 
-### 3.1. Aplicação Signer
+### 3.1. Aplicação Assinador
 
 **Descrição:** Interface via linha de comandos (console) para interação com usuários humanos.
 
 **Características:**
-- Multiplataforma (Windows, Linux e MacOS)
-- Interface de linha de comandos (CLI)
+- Multiplataforma (Windows, Linux e macOS)
+- Interface de linha de comandos (CLI - Command Line Interface)
 - Integra-se com a aplicação assinatura.jar
 - Fornece uma interface amigável para usuários humanos acessarem funcionalidades de assinatura digital
 
@@ -106,7 +106,7 @@ O sistema é composto por **duas aplicações** que trabalham de forma integrada
                                              ▼
                     ┌────────────────────────────────────────┐
                     │                                        │
-                    │         Signer (CLI App)               │
+                    │      Assinador (Aplicação CLI)        │
                     │                                        │
                     │  - Aplicação multiplataforma           │
                     │  - Interface de linha de comandos      │
@@ -114,7 +114,7 @@ O sistema é composto por **duas aplicações** que trabalham de forma integrada
                     │  - Formata saída para o usuário       │
                     │                                        │
                     │  Tecnologia: A definir                 │
-                    │  Plataformas: Windows, Linux, MacOS    │
+                    │  Plataformas: Windows, Linux, macOS    │
                     │                                        │
                     └──────────────┬─────────────────────────┘
                                    │
@@ -125,7 +125,7 @@ O sistema é composto por **duas aplicações** que trabalham de forma integrada
                                    ▼
                     ┌────────────────────────────────────────┐
                     │                                        │
-                    │      Assinatura.jar (Java App)        │
+                    │   Assinatura.jar (Aplicação Java)     │
                     │                                        │
                     │  - Valida parâmetros de entrada       │
                     │  - Trata erros e exceções             │
@@ -140,12 +140,12 @@ O sistema é composto por **duas aplicações** que trabalham de forma integrada
 
 **Descrição dos Contêineres:**
 
-1. **Signer (CLI App)**
+1. **Assinador (Aplicação CLI)**
    - Tipo: Aplicação de linha de comandos
    - Função: Interface para o usuário humano
-   - Comunicação: Invoca assinatura.jar via linha de comandos/API
+   - Comunicação: Invoca assinatura.jar via linha de comandos
 
-2. **Assinatura.jar (Java App)**
+2. **Assinatura.jar (Aplicação Java)**
    - Tipo: Aplicação Java executável
    - Função: Motor de simulação de assinaturas digitais
    - Comunicação: Recebe parâmetros e retorna resultados
@@ -186,10 +186,10 @@ O sistema é composto por **duas aplicações** que trabalham de forma integrada
 
 ## 6. Requisitos Técnicos
 
-### 6.1. Aplicação Signer
+### 6.1. Aplicação Assinador
 
 **Requisitos Funcionais:**
-- RF01: Deve funcionar em Windows, Linux e MacOS
+- RF01: Deve funcionar em Windows, Linux e macOS
 - RF02: Deve fornecer interface via linha de comandos
 - RF03: Deve validar entrada do usuário antes de invocar assinatura.jar
 - RF04: Deve apresentar resultados de forma legível ao usuário
@@ -219,29 +219,29 @@ O sistema é composto por **duas aplicações** que trabalham de forma integrada
 ### 7.1. Fluxo de Criação de Assinatura
 
 ```
-Usuário → Signer → assinatura.jar → Signer → Usuário
+Usuário → Assinador → assinatura.jar → Assinador → Usuário
 
 1. Usuário: Executa comando para criar assinatura
-2. Signer: Valida entrada do usuário
-3. Signer: Invoca assinatura.jar com parâmetros
+2. Assinador: Valida entrada do usuário
+3. Assinador: Invoca assinatura.jar com parâmetros
 4. Assinatura.jar: Valida parâmetros
 5. Assinatura.jar: Retorna assinatura simulada
-6. Signer: Formata resultado
-7. Signer: Apresenta ao usuário
+6. Assinador: Formata resultado
+7. Assinador: Apresenta ao usuário
 ```
 
 ### 7.2. Fluxo de Validação de Assinatura
 
 ```
-Usuário → Signer → assinatura.jar → Signer → Usuário
+Usuário → Assinador → assinatura.jar → Assinador → Usuário
 
 1. Usuário: Executa comando para validar assinatura
-2. Signer: Valida entrada do usuário
-3. Signer: Invoca assinatura.jar com parâmetros
+2. Assinador: Valida entrada do usuário
+3. Assinador: Invoca assinatura.jar com parâmetros
 4. Assinatura.jar: Valida parâmetros
 5. Assinatura.jar: Retorna resultado simulado
-6. Signer: Formata resultado
-7. Signer: Apresenta ao usuário
+6. Assinador: Formata resultado
+7. Assinador: Apresenta ao usuário
 ```
 
 ### 7.3. Tratamento de Erros
@@ -270,7 +270,7 @@ Os parâmetros para as operações de criação e validação de assinatura digi
 
 ### 9.1. O que ESTÁ no Escopo
 
-✅ Desenvolvimento da aplicação Signer (CLI multiplataforma)
+✅ Desenvolvimento da aplicação Assinador (CLI multiplataforma)
 ✅ Desenvolvimento da aplicação assinatura.jar
 ✅ Integração entre as duas aplicações
 ✅ Validação rigorosa de parâmetros
@@ -285,16 +285,16 @@ Os parâmetros para as operações de criação e validação de assinatura digi
 ❌ Implementação real de assinatura digital criptográfica
 ❌ Integração com autoridades certificadoras
 ❌ Armazenamento persistente de assinaturas
-❌ Interface gráfica (GUI)
+❌ Interface gráfica (GUI - Graphical User Interface)
 ❌ API web ou serviços REST
 ❌ Autenticação de usuários
 ❌ Geração real de certificados digitais
 
 ## 10. Entregáveis
 
-1. **Código-fonte da aplicação Signer**
+1. **Código-fonte da aplicação Assinador**
    - Implementação completa
-   - Compatível com Windows, Linux e MacOS
+   - Compatível com Windows, Linux e macOS
    - Código bem documentado
 
 2. **Código-fonte da aplicação assinatura.jar**
@@ -308,7 +308,7 @@ Os parâmetros para as operações de criação e validação de assinatura digi
    - Casos de teste para cenários de erro
 
 4. **Documentação**
-   - Manual de usuário para Signer
+   - Manual de usuário para Assinador
    - Documentação técnica da integração
    - Exemplos de uso
    - Guia de instalação
@@ -329,15 +329,15 @@ Como o sistema **simula** operações de assinatura digital:
 
 ### 11.2. Tecnologias Sugeridas
 
-**Para Signer:**
+**Para Assinador:**
 - Python (com bibliotecas como Click ou argparse)
 - Go (com Cobra)
 - Rust (com Clap)
 - Node.js (com Commander)
 
 **Para assinatura.jar:**
-- Java 11+ (LTS)
-- Maven ou Gradle para build
+- Java 11+ (LTS - Long Term Support)
+- Maven ou Gradle para construção (build)
 - JUnit para testes
 
 ### 11.3. Padrões de Qualidade
@@ -354,7 +354,7 @@ O desenvolvimento será realizado de forma **paulatina**, ao longo da disciplina
 
 **Fase 1**: Especificação e planejamento (este documento)
 **Fase 2**: Implementação do assinatura.jar
-**Fase 3**: Implementação do Signer
+**Fase 3**: Implementação do Assinador
 **Fase 4**: Integração e testes
 **Fase 5**: Documentação e refinamentos
 
@@ -376,12 +376,16 @@ O desenvolvimento será realizado de forma **paulatina**, ao longo da disciplina
 
 ## 14. Glossário
 
-- **Signer**: Aplicação de linha de comandos que serve como interface para o usuário
+- **Assinador**: Aplicação de linha de comandos que serve como interface para o usuário
 - **assinatura.jar**: Aplicação Java que simula operações de assinatura digital
 - **Assinatura Digital**: No contexto deste trabalho, uma simulação de assinatura criptográfica
-- **FHIR**: Fast Healthcare Interoperability Resources - padrão para troca de informações de saúde
-- **CLI**: Command Line Interface (Interface de Linha de Comandos)
-- **JAR**: Java Archive - formato de arquivo executável Java
+- **FHIR**: Fast Healthcare Interoperability Resources - Recursos de Interoperabilidade Rápida em Saúde, padrão para troca de informações de saúde
+- **CLI**: Command Line Interface - Interface de Linha de Comandos
+- **GUI**: Graphical User Interface - Interface Gráfica do Usuário
+- **API**: Application Programming Interface - Interface de Programação de Aplicações
+- **REST**: Representational State Transfer - Transferência de Estado Representacional
+- **JAR**: Java Archive - Formato de arquivo executável Java
+- **LTS**: Long Term Support - Suporte de Longo Prazo
 - **Simulação**: Comportamento que imita a operação real sem executar a lógica criptográfica complexa
 
 ---
