@@ -1,46 +1,48 @@
 # Contexto e Escopo - Trabalho Prático
 
-## 1. Visão Geral
+## 1. Visão geral
 
-Este documento define o contexto e escopo do trabalho prático da disciplina de Implementação e Integração do Bacharelado em Engenharia de Software (2026). O trabalho visa proporcionar aos estudantes a prática de construção de software através do desenvolvimento de um sistema de assinatura digital simulado.
+Este documento define o contexto e escopo do trabalho prático da disciplina de Implementação e Integração do Bacharelado em Engenharia de Software (2026). O trabalho visa proporcionar aos estudantes a oportunidade de prática de construção de software.
 
 ## 2. Objetivos
 
-O objetivo principal é desenvolver habilidades práticas dos estudantes através da implementação de:
 - Uma aplicação multiplataforma via linha de comandos (CLI)
 - Integração entre aplicações
 - Validação de parâmetros e tratamento de erros
 - Simulação de funcionalidades complexas
 
-## 3. Descrição do Sistema
+## 3. Descrição do sistema
 
 O sistema é composto por **duas aplicações** que trabalham de forma integrada:
 
-### 3.1. Aplicação Assinador
+### 3.1. Aplicação assinatura
 
-**Descrição:** Interface via linha de comandos (console) para interação com usuários humanos.
+**Descrição:** interface via linha de comandos (console) para interação com usuários humanos.
 
 **Características:**
 - Multiplataforma (Windows, Linux e macOS)
 - Interface de linha de comandos (CLI - Command Line Interface)
-- Integra-se com a aplicação assinatura.jar
+- Integra-se com a aplicação assinador.jar
 - Fornece uma interface amigável para usuários humanos acessarem funcionalidades de assinatura digital
 
 **Responsabilidades:**
 - Receber comandos do usuário
-- Validar entrada do usuário
-- Invocar a aplicação assinatura.jar com os parâmetros apropriados
+- Validar consistência sintática dos parâmetros de entrada do usuário
+- Invocar a aplicação assinador.jar com os parâmetros
 - Apresentar resultados ao usuário de forma legível
 
-### 3.2. Aplicação Assinatura.jar
+### 3.2. Aplicação assinador.jar
 
-**Descrição:** Aplicação Java que simula a criação e validação de assinaturas digitais.
+**Descrição:** aplicação Java que valida parâmetros de entrada e simula a criação e validação de assinaturas digitais.
 
 **Características:**
 - Implementada em Java (arquivo .jar)
-- Não realiza assinatura digital real (simulação)
+- Não realiza assinatura digital real (apenas simulação)
 - Valida parâmetros de entrada
 - Retorna respostas pré-construídas
+- Suporta dois modos de execução:
+  - **Modo local (CLI)**: a aplicação é invocada diretamente via linha de comandos. Cada execução realiza o ciclo completo de inicialização da JVM e carga da aplicação (*cold start*), sendo adequado para execuções esporádicas ou scripts de automação.
+  - **Modo servidor (HTTP)**: a aplicação é iniciada uma única vez e permanece em execução, aguardando requisições. Este modo elimina o overhead de inicialização nas chamadas subsequentes (*warm start*), oferecendo menor latência e maior throughput para cenários com múltiplas requisições.
 
 **Responsabilidades:**
 - Validar parâmetros recebidos para operações de criação e validação de assinatura
