@@ -6,7 +6,7 @@ Este documento define o contexto e escopo do trabalho prático da disciplina de 
 
 ## 2. Objetivo do Sistema Runner
 
-Implementar acesso à funcionalidade de execução de aplicações Java via linha de comandos. 
+Facilitar o acesso à funcionalidade de execução de aplicações Java via linha de comandos. 
 
 ## 3. Objetivos específicos
 
@@ -14,6 +14,7 @@ Implementar acesso à funcionalidade de execução de aplicações Java via linh
 2. O sistema inclui o desenvolvimento do Assinador, que simula a criação e validação de assinaturas digitais. Embora a criação e a validação sejam simuladas, esta aplicação deve validar os parâmetros de entrada. A confecção do Assinador inclui interação com dispositivo de assinatura digital (token ou smart card) via PKCS#11.
 3. O sistema deve ser capaz de gerir o ciclo de vida de execução do Simulador do HubSaúde, uma aplicação Java real (**simulador.jar**), doravante denominado de Simulador. Este simulador não será desenvolvido como parte do Sistema Runner.
 4. O sistema deve ser capaz de baixar o JDK necessário para a execução tanto do Assinador quanto do Simulador, caso o JDK não esteja presente na máquina do usuário.
+5. O sistema deve ser disponibilizado em três versões pré-compiladas para as plataformas Windows, Linux e macOS, distribuídas via GitHub Releases.
 
 ### Diagrama de Contexto
 
@@ -26,7 +27,7 @@ Implementar acesso à funcionalidade de execução de aplicações Java via linh
 | Usuário | Ator | Pessoa que interage com o sistema via linha de comandos |
 | Dispositivo de Assinatura Digital | Sistema Externo | Hardware criptográfico (token USB, smart card) que armazena certificados e executa operações de assinatura |
 | Assinador (runner) | Sistema | Aplicação que orquestra as operações de assinatura digital |
-
+| Simulador do HubSaúde | Sistema Externo | Aplicação Web gerida pelo CLI e que responde a requisições de terceiros |
 ## 3. Identificação de contêineres
 
 O sistema é composto por duas aplicações que trabalham de forma integrada: a aplicação
