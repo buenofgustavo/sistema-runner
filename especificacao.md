@@ -206,7 +206,7 @@ Devem ser confeccionados e disponibilizados:
    - Cada release deve conter checksums (SHA256) para verificação de integridade
    - Versionamento semântico (SemVer) para controle de releases
 
-## 8. Considerações de Implementação
+## 8. Considerações de implementação
 
 ### 8.1. Simulação
 
