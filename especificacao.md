@@ -118,7 +118,7 @@ Os requisitos funcionais são expressos na forma de histórias de usuário (user
 - [ ] Utilizar versionamento semântico (SemVer)
 
 
-## 6. Integração entre Aplicações
+## 6. Integração entre aplicações
 
 A aplicação **assinatura** (CLI) se comunica com o **assinador.jar** por dois mecanismos:
 
@@ -165,8 +165,7 @@ Em qualquer ponto do fluxo, erros devem ser:
 
 ## 7. Entregáveis
 
-Devem ser confeccionados e disponibilizado ao longo da disciplina
-no repositório correspondente (GitHub).
+Devem ser confeccionados e disponibilizados:
 
 1. **Código-fonte da aplicação assinatura**
    - Implementação completa
