@@ -199,11 +199,11 @@ Devem ser confeccionados e disponibilizados:
 
 6. **Artefatos executáveis**
    - Binários pré-compilados para as três plataformas suportadas:
-     - `assinatura-windows-amd64.exe` (Windows)
-     - `assinatura-linux-amd64` (Linux)
-     - `assinatura-darwin-amd64` (macOS)
+     - `assinatura-1.0.0-windows-amd64.exe` (Windows)
+     - `assinatura-1.0.0-linux-amd64.AppImage` (Linux)
+     - `assinatura-1.0.0-macos-amd64.dmg` (macOS)
    - Distribuídos via **GitHub Releases**
-   - Cada release deve conter checksums (SHA256) para verificação de integridade
+   - Cada release deve conter checksums (SHA256) para verificação de integridade, ou seja, `assinatura-1.0.0-windows-amd64.exe.sha256` e assim por diante.
    - Versionamento semântico (SemVer) para controle de releases
 
 ## 8. Considerações de implementação
@@ -223,19 +223,65 @@ Como o sistema **simula** operações de assinatura digital:
 - Documentação clara
 - Mensagens de erro úteis
 
-## 9. Referências
 
-1. **Especificações FHIR - Segurança**
-   - [Caso de Uso: Criar Assinatura](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-criar-assinatura.html)
-   - [Caso de Uso: Validar Assinatura](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-validar-assinatura.html)
+## 9. Integridade e assinatura de artefatos
 
-2. **Modelo C4 para Visualização de Arquitetura**
-   - [C4 Model](https://c4model.com/)
-   - Nível 1: Diagrama de Contexto
-   - Nível 2: Diagrama de Contêiner
+Para garantir a autenticidade e a integridade dos binários distribuídos, todos os artefatos publicados nas releases do projeto devem ser assinados criptograficamente utilizando **Cosign**, parte do ecossistema **Sigstore**.
 
-3. **Boas Práticas de CLI**
-   - Mensagens claras e consistentes
-   - Tratamento adequado de erros
-   - Documentação de help integrada
+Esse mecanismo permite que qualquer usuário verifique de forma independente a origem e a integridade dos artefatos distribuídos, reduzindo riscos de ataques à cadeia de suprimentos de software (*software supply chain*).
+
+### 9.1 Requisito de assinatura
+
+Todos os artefatos distribuídos nas releases do projeto **DEVEM ser assinados utilizando Cosign**.
+
+O processo de assinatura deve utilizar identidade baseada em **OIDC** e registrar a assinatura no *transparency log* do Sigstore.
+
+### 9.2 Arquivos obrigatórios na release
+
+Para cada artefato distribuído, os seguintes arquivos devem ser publicados na release:
+
+```
+
+<artefato>
+<artefato>.sig
+<artefato>.pem
+```
+
+Exemplo:
+
+```
+assinatura-1.0.0-linux-amd64.AppImage
+assinatura-1.0.0-linux-amd64.AppImage.sig
+assinatura-1.0.0-linux-amd64.AppImage.pem
+```
+
+### 9.3 Verificação dos artefatos
+
+Os usuários podem verificar a autenticidade de um artefato utilizando o comando `cosign`.
+
+Exemplo:
+
+```bash
+cosign verify-blob \
+  --certificate assinatura-1.0.0-linux-amd64.AppImage.pem \
+  --signature assinatura-1.0.0-linux-amd64.AppImage.sig \
+  assinatura-1.0.0-linux-amd64.AppImage
+```
+
+Se a verificação for bem-sucedida, o Cosign indicará que a assinatura é válida.
+
+### 9.4 Automação
+
+A assinatura dos artefatos **DEVE ser realizada automaticamente pelo pipeline de CI/CD** durante a criação da release, garantindo consistência e reduzindo o risco de erros manuais.
+
+### 9.5 Justificativa
+
+A assinatura dos artefatos distribuídos proporciona:
+
+* verificação da autenticidade dos binários
+* proteção contra adulteração dos artefatos
+* rastreabilidade da origem do software
+* maior segurança para usuários e integradores
+
+Essa abordagem segue práticas modernas de segurança para **cadeia de suprimentos de software** (*software supply chain security*).
 
