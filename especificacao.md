@@ -2,7 +2,9 @@
 
 ## 1. Visão geral
 
-Este documento define o contexto e escopo do trabalho prático da disciplina de Implementação e Integração do Bacharelado em Engenharia de Software (2026). O trabalho visa proporcionar aos estudantes a oportunidade de prática de construção de software por meio do desenvolvimento do *Sistema Runner*.
+Este documento define o trabalho prático da disciplina de Implementação e Integração do Bacharelado em Engenharia de Software (2026). O trabalho visa proporcionar aos estudantes a oportunidade de prática de construção de software por meio do desenvolvimento do *Sistema Runner*.
+
+Em tempo, este trabalho prático proposto é de interesse real da Secretaria de Estado de Saúde de Goiás (SES) e da Universidade Federal de Goiás (UFG), que realizam um esforço conjunto na definição e implementação de uma plataforma de interoperabilidade de dados em saúde.
 
 ## 2. Objetivo do Sistema Runner
 
@@ -15,7 +17,31 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 2. Fornecer uma interface de linha de comandos (CLI) simples e intuitiva para interação com as aplicações Java, permitindo que os usuários possam executar comandos específicos para cada aplicação. Desta forma, ocultando a complexidade de configuração ou facilitando o acesso às funcionalidades sem necessidade de conhecimento técnico aprofundado.
 
 
-## 4. Requisitos do Sistema Runner
+## 4. Escopo 
+
+### 4.1. O que ESTÁ no Escopo
+
+- ✅ Desenvolvimento da aplicação assinatura (CLI multiplataforma)
+- ✅ Desenvolvimento da aplicação assinador.jar
+- ✅ Integração entre as duas aplicações
+- ✅ Validação rigorosa de parâmetros
+- ✅ Simulação de criação de assinatura
+- ✅ Simulação de validação de assinatura
+- ✅ Tratamento de erros e exceções
+- ✅ Testes das funcionalidades
+- ✅ Documentação de uso
+
+### 4.2. O que NÃO ESTÁ no Escopo
+
+- ❌ Implementação real de assinatura digital criptográfica
+- ❌ Integração com autoridades certificadoras
+- ❌ Armazenamento persistente de assinaturas
+- ❌ Interface gráfica (GUI - Graphical User Interface)
+- ❌ API web ou serviços REST
+- ❌ Autenticação de usuários
+- ❌ Geração real de certificados digitais
+
+## 5. Requisitos do Sistema Runner
 
 ### US-01: Invocar Assinador via CLI
 
@@ -84,7 +110,7 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 - [ ] Utilizar versionamento semântico (SemVer)
 
 
-### 4.1. Aplicação assinatura
+### 5.1. Aplicação assinatura
 
 Interface via linha de comandos (console) para interação com usuários humanos.
 
@@ -100,7 +126,7 @@ Interface via linha de comandos (console) para interação com usuários humanos
 - Invocar a aplicação assinador.jar com os parâmetros
 - Apresentar resultados ao usuário de forma legível
 
-### 4.2. Aplicação assinador.jar
+### 5.2. Aplicação assinador.jar
 
 Aplicação Java que valida parâmetros de entrada e simula a criação e validação de assinaturas digitais.
 
@@ -121,9 +147,9 @@ Aplicação Java que valida parâmetros de entrada e simula a criação e valida
   - Para **validação de assinatura**: retornar indicação de sucesso ou falha no formato esperado
 - Garantir que todos os parâmetros estejam corretos antes de processar
 
-## 5. Funcionalidades
+## 6. Funcionalidades
 
-### 5.1. Criar assinatura digital (simulação)
+### 6.1. Criar assinatura digital (simulação)
 
 **Entrada:**
 - Referência: [caso-de-uso-criar-assinatura.html](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-criar-assinatura.html)
@@ -138,7 +164,7 @@ Aplicação Java que valida parâmetros de entrada e simula a criação e valida
 - Sucesso: assinatura digital simulada (pré-construída)
 - Falha: mensagem de erro indicando o problema
 
-### 5.2. Validar assinatura digital (simulação)
+### 6.2. Validar assinatura digital (simulação)
 
 **Entrada:**
 - Referência: [caso-de-uso-validar-assinatura.html](https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-validar-assinatura.html)
@@ -153,9 +179,9 @@ Aplicação Java que valida parâmetros de entrada e simula a criação e valida
 - Sucesso: Indicação se a assinatura é válida ou inválida (simulado)
 - Falha: Mensagem de erro indicando o problema
 
-## 6. Requisitos técnicos
+## 7. Requisitos técnicos
 
-### 6.1. Aplicação assinatura
+### 7.1. Aplicação assinatura
 
 **Requisitos funcionais:**
 - RF01: Deve funcionar em Windows, Linux e macOS
@@ -169,7 +195,7 @@ Aplicação Java que valida parâmetros de entrada e simula a criação e valida
 - RNF02: Deve ter documentação clara de uso
 - RNF03: Mensagens de erro devem ser claras e acionáveis
 
-### 6.2. Aplicação assinador.jar
+### 7.2. Aplicação assinador.jar
 
 **Requisitos funcionais:**
 - RF01: Deve validar rigorosamente todos os parâmetros de entrada
@@ -183,9 +209,9 @@ Aplicação Java que valida parâmetros de entrada e simula a criação e valida
 - RNF02: Deve ter tratamento robusto de erros
 - RNF03: Deve retornar resultados em formato estruturado
 
-## 7. Integração entre Aplicações
+## 8. Integração entre Aplicações
 
-### 7.1. Fluxo de Criação de Assinatura
+### 8.1. Fluxo de Criação de Assinatura
 
 ```
 Usuário → assinatura → assinador.jar → assinatura → Usuário
@@ -199,7 +225,7 @@ Usuário → assinatura → assinador.jar → assinatura → Usuário
 7. assinatura: apresenta ao usuário
 ```
 
-### 7.2. Fluxo de Validação de Assinatura
+### 8.2. Fluxo de Validação de Assinatura
 
 ```
 Usuário → assinatura → assinador.jar → assinatura → Usuário
@@ -213,7 +239,7 @@ Usuário → assinatura → assinador.jar → assinatura → Usuário
 7. assinatura: apresenta ao usuário
 ```
 
-### 7.3. Tratamento de erros
+### 8.3. Tratamento de erros
 
 Em qualquer ponto do fluxo, erros devem ser:
 - Capturados apropriadamente
@@ -221,41 +247,17 @@ Em qualquer ponto do fluxo, erros devem ser:
 - Apresentados ao usuário de forma clara
 - Incluir informação suficiente para correção
 
-## 8. Parâmetros de entrada
+## 9. Parâmetros de entrada
 
 Os parâmetros para as operações de criação e validação de assinatura digital estão definidos de forma precisa nas especificações FHIR:
 
-### 8.1. Parâmetros para criar Assinatura
+### 9.1. Parâmetros para criar Assinatura
 - **Referência**: https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-criar-assinatura.html
 - **Descrição**: define todos os parâmetros necessários para solicitar a criação de uma assinatura digital
 
-### 8.2. Parâmetros para validar Assinatura
+### 9.2. Parâmetros para validar Assinatura
 - **Referência**: https://fhir.saude.go.gov.br/r4/seguranca/caso-de-uso-validar-assinatura.html
 - **Descrição**: define todos os parâmetros necessários para solicitar a validação de uma assinatura digital
-
-## 9. Escopo 
-
-### 9.1. O que ESTÁ no Escopo
-
-- ✅ Desenvolvimento da aplicação assinatura (CLI multiplataforma)
-- ✅ Desenvolvimento da aplicação assinador.jar
-- ✅ Integração entre as duas aplicações
-- ✅ Validação rigorosa de parâmetros
-- ✅ Simulação de criação de assinatura
-- ✅ Simulação de validação de assinatura
-- ✅ Tratamento de erros e exceções
-- ✅ Testes das funcionalidades
-- ✅ Documentação de uso
-
-### 9.2. O que NÃO ESTÁ no Escopo
-
-- ❌ Implementação real de assinatura digital criptográfica
-- ❌ Integração com autoridades certificadoras
-- ❌ Armazenamento persistente de assinaturas
-- ❌ Interface gráfica (GUI - Graphical User Interface)
-- ❌ API web ou serviços REST
-- ❌ Autenticação de usuários
-- ❌ Geração real de certificados digitais
 
 ## 10. Entregáveis
 
