@@ -85,8 +85,9 @@ Os requisitos funcionais são expressos na forma de histórias de usuário (user
 
 **Critérios de aceitação:**
 - [ ] O CLI deve permitir iniciar o Simulador
+- [ ] O CLI deve verificar se as portas necessárias para o Simulador estão disponíveis antes de iniciar
 - [ ] O CLI deve permitir parar o Simulador
-- [ ] O CLI deve exibir o status atual do Simulador
+- [ ] O CLI deve exibir o status atual do Simulador (ou que não está em execução)
 - [ ] O Simulador (simulador.jar) não faz parte do escopo de desenvolvimento deste sistema
 
 
@@ -97,13 +98,13 @@ Os requisitos funcionais são expressos na forma de histórias de usuário (user
 **Para que** eu possa utilizar o Assinador e o Simulador sem precisar instalar ou configurar o Java manualmente
 
 **Critérios de aceitação:**
-- [ ] O sistema deve detectar se o JDK está presente na máquina
+- [ ] O sistema deve detectar se o JDK está presente na máquina (na versão exigida)
 - [ ] O sistema deve baixar o JDK compatível quando ausente
-- [ ] O sistema deve configurar o JDK baixado para uso pelo Assinador e Simulador
-- [ ] O download deve funcionar nas três plataformas suportadas
+- [ ] O sistema deve disponibilizar o JDK baixado para uso próprio ou seja, pelo Assinador e Simulador
+- [ ] O download deve funcionar nas três plataformas
 
 
-### US-05: Disponibilizar Binários Multiplataforma
+### US-05: Disponibilizar binários multiplataforma
 
 **Como** usuário do Sistema Runner  
 **Quero** baixar uma versão pré-compilada do CLI para minha plataforma (Windows, Linux ou macOS)  
@@ -181,6 +182,7 @@ Devem ser confeccionados e disponibilizados:
    - Testes unitários
    - Testes de integração
    - Casos de teste para cenários de erro
+   - Testes de aceitação baseados nos critérios definidos
 
 4. **Documentação**
    - Manual de usuário para assinatura
