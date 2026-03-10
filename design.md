@@ -1,5 +1,7 @@
 # Sistema Runner - Design
 
+Usa-se o modelo C4. Consulte [C4 Model](https://c4model.com/) para detalhes.
+
 
 ## 1. Diagrama de Contexto
 
