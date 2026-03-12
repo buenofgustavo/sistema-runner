@@ -28,6 +28,7 @@ Facilitar o acesso à funcionalidade de execução de aplicações Java via linh
 - ✅ Simulação de criação de assinatura (assinador.jar)
 - ✅ Simulação de validação de assinatura (assinador.jar)
 - ✅ Tratamento de erros dos parâmetros e exceções (assinador.jar)
+- ✅ Desenvolvimento da aplicação simulador (CLI multiplataforma)
 - ✅ Testes 
 - ✅ Documentação de uso
 
@@ -202,9 +203,17 @@ Devem ser confeccionados e disponibilizados:
      - `assinatura-1.0.0-windows-amd64.exe` (Windows)
      - `assinatura-1.0.0-linux-amd64.AppImage` (Linux)
      - `assinatura-1.0.0-macos-amd64.dmg` (macOS)
+     - `simulador-1.0.0-windows-amd64.exe` (Windows)
+     - `simulador-1.0.0-linux-amd64.AppImage` (Linux)
+     - `simulador-1.0.0-macos-amd64.dmg` (macOS)
    - Distribuídos via **GitHub Releases**
    - Cada release deve conter assinatura dos artefatos publicados, conforme a seção abaixo.
    - Observe que é usado SemVer para versionamento, então a versão 1.0.0 é apenas um exemplo e deve ser atualizada conforme o desenvolvimento avança.
+
+7. **Código fonte do Simulador do HubSaúde**
+   - Implementação completa
+   - Código bem documentado
+   - Compatível com Windows, Linux e macOS
 
 ## 8. Considerações de implementação
 
