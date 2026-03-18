@@ -2,12 +2,16 @@ package runner.assinador.dto;
 
 public class AssinaturaResponse {
 
-    private String mensagem;
+    private String assinatura;
     private boolean sucesso;
+    private String mensagem;
 
-    public String getMensagem() { return mensagem; }
-    public void setMensagem(String mensagem) { this.mensagem = mensagem; }
+    public String getAssinatura() { return assinatura; }
+    public void setAssinatura(String assinatura) { this.assinatura = assinatura; }
 
     public boolean isSucesso() { return sucesso; }
     public void setSucesso(boolean sucesso) { this.sucesso = sucesso; }
+
+    public String getMensagem() { return mensagem; }
+    public void setMensagem(String mensagem) { this.mensagem = mensagem; }
 }

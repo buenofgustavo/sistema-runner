@@ -2,7 +2,9 @@ package runner.assinador.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-import runner.assinador.dto.AssinaturaRequest;
+
+import runner.assinador.dto.CriarAssinaturaRequest;
+import runner.assinador.dto.ValidarAssinaturaRequest;
 import runner.assinador.dto.AssinaturaResponse;
 import runner.assinador.service.AssinaturaService;
 
@@ -16,24 +18,40 @@ public class AssinaturaController {
         this.service = service;
     }
 
+    // 🔹 Criar assinatura (simulação)
     @PostMapping("/criar")
-    public AssinaturaResponse criar(@Valid @RequestBody AssinaturaRequest request) {
+    public AssinaturaResponse criar(@Valid @RequestBody CriarAssinaturaRequest request) {
+
+        String assinatura = service.criar(
+                request.getPayload(),
+                request.getAlgoritmo(),
+                request.getCertificado()
+        );
 
         AssinaturaResponse response = new AssinaturaResponse();
-        response.setMensagem(service.criar());
+        response.setAssinatura(assinatura);
         response.setSucesso(true);
+        response.setMensagem("Assinatura criada com sucesso");
 
         return response;
     }
 
+    // 🔹 Validar assinatura (simulação)
     @PostMapping("/validar")
-    public AssinaturaResponse validar(@Valid @RequestBody AssinaturaRequest request) {
+    public AssinaturaResponse validar(@Valid @RequestBody ValidarAssinaturaRequest request) {
 
-        boolean valido = service.validar(request.getValor());
+        boolean valida = service.validar(
+                request.getPayload(),
+                request.getAssinatura(),
+                request.getAlgoritmo()
+        );
 
         AssinaturaResponse response = new AssinaturaResponse();
-        response.setSucesso(valido);
-        response.setMensagem(valido ? "Assinatura válida" : "Assinatura inválida");
+        response.setSucesso(valida);
+        response.setAssinatura(request.getAssinatura());
+        response.setMensagem(
+                valida ? "Assinatura válida" : "Assinatura inválida"
+        );
 
         return response;
     }
