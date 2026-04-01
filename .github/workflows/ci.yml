@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*.*.*" ]
 
 jobs:
   build:
@@ -38,15 +39,31 @@ jobs:
       - name: Download Dependencies
         run: go mod download
 
+      - name: Extract Version
+        id: version
+        shell: bash
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "VERSION=${github.ref#refs/tags/}" >> $GITHUB_ENV
+          else
+            echo "VERSION=latest" >> $GITHUB_ENV
+          fi
+
       - name: Build
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-        run: go build -v -o assinatura-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} .
+        run: go build -v -o assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} .
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: assinatura-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: projetos/assinatura/assinatura-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}
+          name: assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: projetos/assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}
           retention-days: 7
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: projetos/assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}

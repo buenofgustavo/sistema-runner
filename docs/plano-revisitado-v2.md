@@ -59,10 +59,10 @@
 **para que** eu possa utilizar o sistema sem necessidade de compilação, com versionamento claro.
 
 **Critérios de aceitação:**
-- [ ] Tags de versão seguem SemVer (ex.: `v0.1.0`)
-- [ ] Workflow de release gera binários nomeados por plataforma
-- [ ] Binários publicados automaticamente no GitHub Releases ao criar tag
-- [ ] Nome dos artefatos segue convenção: `assinatura-<versão>-<os>-<arch>`
+- [x] Tags de versão seguem SemVer (ex.: `v0.1.0`)
+- [x] Workflow de release gera binários nomeados por plataforma
+- [x] Binários publicados automaticamente no GitHub Releases ao criar tag
+- [x] Nome dos artefatos segue convenção: `assinatura-<versão>-<os>-<arch>`
 
 ---
 
