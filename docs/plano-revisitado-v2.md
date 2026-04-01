@@ -64,6 +64,19 @@
 - [x] Binários publicados automaticamente no GitHub Releases ao criar tag
 - [x] Nome dos artefatos segue convenção: `assinatura-<versão>-<os>-<arch>`
 
+### US-05.3 — Checksums SHA256 e assinatura de artefatos com Cosign
+
+**Como** usuário do Sistema Runner,
+**quero** que os binários distribuídos incluam checksums SHA256 e assinatura via Cosign,
+**para que** eu possa verificar a integridade e autenticidade dos artefatos baixados.
+
+**Critérios de aceitação:**
+- [x] Cada release inclui arquivo de checksums SHA256 para todos os binários
+- [x] Artefatos assinados com Cosign (identidade OIDC + transparency log)
+- [x] Cada artefato acompanhado de `.sig` e `.pem` conforme especificação
+- [x] Processo de assinatura automatizado no pipeline CI/CD
+- [ ] Documentação de como verificar artefatos com `cosign verify-blob`
+
 ---
 
 ## Sprint 2 — Assinatura Digital Simulada (modo local)
@@ -307,18 +320,7 @@
 - [ ] Versão já baixada não é baixada novamente (cache local em `~/.hubsaude/`)
 - [ ] Verificação de integridade do download (checksum)
 
-### US-05.3 — Checksums SHA256 e assinatura de artefatos com Cosign
-
-**Como** usuário do Sistema Runner,
-**quero** que os binários distribuídos incluam checksums SHA256 e assinatura via Cosign,
-**para que** eu possa verificar a integridade e autenticidade dos artefatos baixados.
-
-**Critérios de aceitação:**
-- [ ] Cada release inclui arquivo de checksums SHA256 para todos os binários
-- [ ] Artefatos assinados com Cosign (identidade OIDC + transparency log)
-- [ ] Cada artefato acompanhado de `.sig` e `.pem` conforme especificação
-- [ ] Processo de assinatura automatizado no pipeline CI/CD
-- [ ] Documentação de como verificar artefatos com `cosign verify-blob`
+- [ ] Checksum SHA-256 e Sigstore Cosign incorporados no fluxo (US-05.3)
 
 ---
 
@@ -326,7 +328,7 @@
 
 | Sprint | Foco | Histórias | Resultado principal |
 |--------|------|-----------|---------------------|
-| 1 | Fundação e Entrega Contínua | US-01.1, US-05.1, US-05.2 | CLI base + CI/CD + Releases |
+| 1 | Fundação e Contínua + Segurança Básica | US-01.1, US-05.1, US-05.2, US-05.3 | CLI base + CI/CD + Sign + Releases |
 | 2 | Assinatura Simulada (modo local) | US-02.1, US-02.2, US-02.3, US-01.2, US-01.3, US-01.4, US-04.1 | Fluxo ponta-a-ponta funcional |
 | 3 | Modo Servidor e PKCS#11 | US-02.4, US-02.5, US-01.5, US-01.6, US-01.7, US-01.8, US-01.9 | Servidor HTTP + material criptográfico |
-| 4 | Simulador e Segurança | US-03.1, US-03.2, US-03.3, US-03.4, US-05.3 | Sistema completo e seguro |
+| 4 | Simulador e Segurança Final | US-03.1, US-03.2, US-03.3, US-03.4 | Sistema e Simulador completos |
