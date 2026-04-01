@@ -35,6 +35,7 @@
 **Critérios de aceitação:**
 - [ ] Projeto Go inicializado com `go mod init github.com/kyriosdata/assinatura`
 - [ ] Instalar ferramenta para cli em Go `go install github.com/spf13/cobra-cli@latest`
+- Prompt: acrescente ao projeto que usa o Cobra a opção version, desta forma, quando for executado, deve exibir a versão corrente da aplicação.
 - [ ] Estrutura de pacotes definida e documentada
 - [ ] Aplicação compila e executa nas três plataformas (Windows, Linux, macOS)
 - [ ] Comando `assinatura version` exibe a versão atual do CLI
