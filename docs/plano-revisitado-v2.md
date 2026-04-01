@@ -92,6 +92,7 @@
 **para que** eu possa testar o fluxo de assinatura sem infraestrutura criptográfica real.
 
 **Critérios de aceitação:**
+- [ ] Projeto Java base inicializado no diretório `projetos/assinador-java`
 - [ ] Interface `SignatureService` definida com métodos `sign` e `validate`
 - [ ] Implementação `FakeSignatureService` retorna assinatura pré-construída para parâmetros válidos
 - [ ] Resposta simulada inclui os campos esperados conforme especificação
