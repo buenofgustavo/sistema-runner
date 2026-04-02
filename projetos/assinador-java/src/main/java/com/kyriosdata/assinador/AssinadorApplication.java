@@ -2,17 +2,18 @@ package com.kyriosdata.assinador;
 
 import com.kyriosdata.assinador.domain.SignatureRequest;
 import com.kyriosdata.assinador.domain.SignatureResponse;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Locale;
 
+@SpringBootApplication
 public final class AssinadorApplication {
 
     private AssinadorApplication() {
     }
 
     public static void main(String[] args) {
-        SignatureService signatureService = new FakeSignatureService();
-
         if (args.length == 0) {
             printUsage();
             return;
@@ -20,8 +21,9 @@ public final class AssinadorApplication {
 
         String command = args[0].toLowerCase(Locale.ROOT);
         switch (command) {
-            case "sign" -> sign(signatureService, args);
-            case "validate" -> validate(signatureService, args);
+            case "sign" -> sign(new FakeSignatureService(), args);
+            case "validate" -> validate(new FakeSignatureService(), args);
+            case "api" -> SpringApplication.run(AssinadorApplication.class, args);
             default -> printUsage();
         }
     }
@@ -61,5 +63,6 @@ public final class AssinadorApplication {
         System.out.println("Uso:");
         System.out.println("  sign <content>");
         System.out.println("  validate <content> <signature>");
+        System.out.println("  api");
     }
 }
