@@ -2,6 +2,92 @@
 
 Ferramenta CLI desenvolvida em Go para realizar assinatura digital simulada e validação de artefatos.
 
+## Status atual (US-01.1 a US-01.4)
+
+- Projeto inicializado com `go.mod` usando o módulo `github.com/kyriosdata/assinatura`
+- CLI construída com Cobra
+- Comandos disponíveis: `version`, `sign`, `validate`
+- Parsing de parâmetros com validações de obrigatoriedade
+- Invocação local de `java -jar assinador.jar`
+- Saída legível para sucesso, validação válida/inválida e erros
+- Testes para parsing e fluxo CLI -> invocador Java
+
+## Pré-requisitos
+
+- Go instalado
+- Java (JRE/JDK) no `PATH` ou `JAVA_HOME` configurado
+- Ferramenta Cobra CLI (gerador):
+
+```bash
+go install github.com/spf13/cobra-cli@latest
+```
+
+## Estrutura de pacotes
+
+```text
+.
+├── cmd/
+│   ├── java.go        # Invocação de java -jar e descoberta do Java
+│   ├── root.go        # Comando raiz e wiring dos subcomandos
+│   ├── sign.go        # Comando de assinatura
+│   ├── validate.go    # Comando de validação
+│   ├── version.go     # Comando de versão
+│   ├── java_test.go   # Testes da camada de invocação Java
+│   └── root_test.go   # Testes de parsing e mapeamento dos comandos
+├── main.go            # Ponto de entrada do binário
+├── go.mod
+└── README.md
+```
+
+## Uso da CLI
+
+### Versão
+
+```bash
+go run . version
+```
+
+### Assinar arquivo
+
+```bash
+go run . sign --jar assinador.jar --input arquivo.pdf --output arquivo.sig
+```
+
+### Validar assinatura
+
+```bash
+go run . validate --jar assinador.jar --input arquivo.pdf --signature arquivo.sig
+```
+
+### Ajuda
+
+```bash
+go run . --help
+go run . sign --help
+go run . validate --help
+```
+
+## Build e execução multiplataforma
+
+Os comandos abaixo produzem binários para as 3 plataformas alvo.
+
+```bash
+# Windows
+GOOS=windows GOARCH=amd64 go build -o dist/assinatura-windows-amd64.exe .
+
+# Linux
+GOOS=linux GOARCH=amd64 go build -o dist/assinatura-linux-amd64 .
+
+# macOS
+GOOS=darwin GOARCH=amd64 go build -o dist/assinatura-darwin-amd64 .
+```
+
+## Testes
+
+```bash
+go test ./...
+```
+
 ## Releases e Downloads
 
 O CLI está disponível para download e é empacotado individualmente para os sistemas `windows`, `linux` e `darwin` na página de [Releases](../../releases) deste repositório.
