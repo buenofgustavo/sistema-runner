@@ -3,7 +3,14 @@ package com.kyriosdata.assinador;
 import com.kyriosdata.assinador.domain.SignRequest;
 import com.kyriosdata.assinador.domain.ValidateRequest;
 import com.kyriosdata.assinador.domain.SignatureResponse;
+import org.springframework.stereotype.Service;
 
+/**
+ * Implementação simulada do serviço de assinatura digital.
+ * 
+ * <p>Esta é uma implementação fake para testes e desenvolvimento.</p>
+ */
+@Service
 public class FakeSignatureService implements SignatureService {
 
     private static final String FAKE_SIGNATURE = "MOCKED_SIGNATURE_BASE64_==";

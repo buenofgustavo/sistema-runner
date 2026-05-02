@@ -17,6 +17,11 @@ public class ValidateRequest {
      */
     private String signature;
 
+    /**
+     * Token de autenticação, credencial ou PIN opcional.
+     */
+    private String token;
+
     public ValidateRequest() {}
 
     public String getContent() {
@@ -33,5 +38,13 @@ public class ValidateRequest {
 
     public void setSignature(String signature) {
         this.signature = signature;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
