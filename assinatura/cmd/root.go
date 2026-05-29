@@ -40,6 +40,7 @@ func NewRootCmd(invoker Invoker) *cobra.Command {
 	rootCmd.AddCommand(newVersionCmd())
 	rootCmd.AddCommand(newSignCmd(invoker))
 	rootCmd.AddCommand(newValidateCmd(invoker))
+	rootCmd.AddCommand(newServerCmd())
 
 	return rootCmd
 }

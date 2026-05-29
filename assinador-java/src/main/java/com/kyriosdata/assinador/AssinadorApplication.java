@@ -25,12 +25,21 @@ public class AssinadorApplication implements CommandLineRunner {
     @Autowired
     private SignatureParamsValidation paramsValidation;
 
-    public static void main(String[] args) {
-        SpringApplication.run(AssinadorApplication.class, args);
-    }
-
     @Override
     public void run(String @NonNull ... args) {
+        boolean isServer = false;
+        for (String arg : args) {
+            if ("--server".equals(arg)) {
+                isServer = true;
+                break;
+            }
+        }
+
+        if (isServer) {
+            // Em modo servidor, os endpoints REST gerenciam as requisições
+            return;
+        }
+
         String result = "";
 
         Operations op = paramsValidation.signatureParams(args);
@@ -52,6 +61,32 @@ public class AssinadorApplication implements CommandLineRunner {
         }
 
         System.out.print(result);
+    }
+
+    public static void main(String[] args) {
+        boolean isServer = false;
+        String port = "8080";
+        String shutdownAfter = "30";
+
+        for (int i = 0; i < args.length; i++) {
+            if ("--server".equals(args[i])) {
+                isServer = true;
+            } else if ("--port".equals(args[i]) && i + 1 < args.length) {
+                port = args[i + 1];
+            } else if ("--shutdown-after".equals(args[i]) && i + 1 < args.length) {
+                shutdownAfter = args[i + 1];
+            }
+        }
+
+        if (isServer) {
+            System.setProperty("server.port", port);
+            System.setProperty("assinador.shutdown-after", shutdownAfter);
+            SpringApplication.run(AssinadorApplication.class, args);
+        } else {
+            SpringApplication app = new SpringApplication(AssinadorApplication.class);
+            app.setWebApplicationType(org.springframework.boot.WebApplicationType.NONE);
+            app.run(args);
+        }
     }
 
     /**

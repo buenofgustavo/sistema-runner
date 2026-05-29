@@ -47,16 +47,45 @@ go install github.com/spf13/cobra-cli@latest
 go run . version
 ```
 
-### Assinar arquivo
+### Assinar arquivo (Modo Servidor - Padrão)
+
+Por padrão, a CLI se comunica com o `assinador.jar` via HTTP. Se o servidor não estiver ativo, a CLI o iniciará automaticamente em segundo plano na porta indicada!
 
 ```bash
-go run . sign --jar assinador.jar --input arquivo.pdf --output arquivo.sig
+go run . sign --input arquivo.pdf --output arquivo.sig
 ```
 
-### Validar assinatura
+### Validar assinatura (Modo Servidor - Padrão)
 
 ```bash
-go run . validate --jar assinador.jar --input arquivo.pdf --signature arquivo.sig
+go run . validate --input arquivo.pdf --signature arquivo.sig
+```
+
+### Modo Servidor HTTP (Warm Start)
+
+Para melhor desempenho, o servidor pode ser gerenciado de forma explícita com os comandos:
+
+```bash
+# Iniciar o servidor em background (porta padrão 8080, inatividade de 30 minutos)
+go run . server start
+
+# Iniciar em porta específica com timeout de inatividade personalizado (minutos)
+go run . server start --port 9090 --shutdown-after 15
+
+# Verificar o status de funcionamento do servidor
+go run . server status --port 9090
+
+# Parar o servidor de forma limpa (graceful shutdown)
+go run . server stop --port 9090
+```
+
+### Modo Local (Cold Start)
+
+Caso prefira executar a operação diretamente em uma nova instância da JVM local sem subir servidor, utilize o modo local:
+
+```bash
+go run . sign --mode local --input arquivo.pdf --output arquivo.sig
+go run . validate --mode local --input arquivo.pdf --signature arquivo.sig
 ```
 
 ### Ajuda
@@ -65,6 +94,7 @@ go run . validate --jar assinador.jar --input arquivo.pdf --signature arquivo.si
 go run . --help
 go run . sign --help
 go run . validate --help
+go run . server --help
 ```
 
 ## Build e execução multiplataforma
