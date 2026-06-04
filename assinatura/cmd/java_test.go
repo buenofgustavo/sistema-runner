@@ -7,16 +7,18 @@ import (
 )
 
 type fakeExecutor struct {
-	name   string
-	args   []string
-	output []byte
-	err    error
+	name     string
+	args     []string
+	stdout   []byte
+	stderr   []byte
+	exitCode int
+	err      error
 }
 
-func (f *fakeExecutor) CombinedOutput(name string, args ...string) ([]byte, error) {
+func (f *fakeExecutor) RunCommand(name string, args ...string) (stdout []byte, stderr []byte, exitCode int, err error) {
 	f.name = name
 	f.args = args
-	return f.output, f.err
+	return f.stdout, f.stderr, f.exitCode, f.err
 }
 
 func TestJavaInvokerJarNotFound(t *testing.T) {
@@ -31,7 +33,7 @@ func TestJavaInvokerJarNotFound(t *testing.T) {
 }
 
 func TestJavaInvokerCommandErrorReturnsToolOutput(t *testing.T) {
-	invoker := &JavaInvoker{executor: &fakeExecutor{output: []byte("erro do assinador"), err: errors.New("exit status 1")}}
+	invoker := &JavaInvoker{executor: &fakeExecutor{stdout: []byte("erro do assinador"), err: errors.New("exit status 1")}}
 	_, err := invoker.Run("java_test.go", []string{"validate"})
 	if err == nil {
 		t.Fatal("expected execution error")

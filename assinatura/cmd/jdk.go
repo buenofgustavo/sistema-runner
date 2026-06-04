@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 )
 
 // URLs estáveis da API do Adoptium para JRE 21 LTS

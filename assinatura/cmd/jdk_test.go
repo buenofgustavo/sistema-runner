@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"path/filepath"
 	"runtime"
 	"testing"
 )
@@ -38,8 +39,9 @@ func TestStripFirstDir(t *testing.T) {
 
 	for _, tc := range tests {
 		actual := stripFirstDir(tc.input)
-		if actual != tc.expected {
-			t.Errorf("stripFirstDir(%q) = %q; expected %q", tc.input, actual, tc.expected)
+		expected := filepath.FromSlash(tc.expected)
+		if actual != expected {
+			t.Errorf("stripFirstDir(%q) = %q; expected %q", tc.input, actual, expected)
 		}
 	}
 }

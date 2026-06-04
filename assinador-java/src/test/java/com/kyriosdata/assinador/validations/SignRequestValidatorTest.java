@@ -18,7 +18,7 @@ class SignRequestValidatorTest {
         request.setBundleJson("{\"resourceType\":\"Bundle\"}");
         request.setProvenanceJson("{\"resourceType\":\"Provenance\"}");
         request.setMaterial("{\"type\":\"PEM\",\"key\":\"-----BEGIN PRIVATE KEY-----\\nMOCK\\n-----END PRIVATE KEY-----\"}");
-        request.setCertChain(Arrays.asList("MOCK_CERT_BASE64_=="));
+        request.setCertChain(Arrays.asList("dGVzdA=="));
         request.setReferenceTimestamp(1751328000L); // 1º julho 2025 (mínimo)
         request.setStrategy("iat");
         request.setSignaturePolicy("https://fhir.saude.go.gov.br/r4/seguranca/ImplementationGuide/br.go.ses.seguranca|0.0.1");

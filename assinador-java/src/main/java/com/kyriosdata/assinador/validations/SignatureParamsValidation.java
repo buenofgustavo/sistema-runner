@@ -1,6 +1,8 @@
 package com.kyriosdata.assinador.validations;
 
 import com.kyriosdata.assinador.enums.Operations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SignatureParamsValidation {
+
+    private static final Logger logger = LoggerFactory.getLogger(SignatureParamsValidation.class);
 
     /**
      * Valida os argumentos e determina qual operação executar.
@@ -39,14 +43,14 @@ public class SignatureParamsValidation {
     public boolean createSignatureParams(String[] args) {
         // Validar se existem parâmetros suficientes
         if (args == null || args.length < 2) {
-            System.err.println("Erro: parâmetros insuficientes para operação SIGN");
+            logger.error("Erro: parâmetros insuficientes para operação SIGN");
             return false;
         }
 
         // Validar se o conteúdo não está vazio
         String content = args[1];
         if (content == null || content.trim().isEmpty()) {
-            System.err.println("Erro: conteúdo a assinar não pode estar vazio");
+            logger.error("Erro: conteúdo a assinar não pode estar vazio");
             return false;
         }
 
@@ -62,21 +66,21 @@ public class SignatureParamsValidation {
     public boolean validateSignatureParams(String[] args) {
         // Validar se existem parâmetros suficientes
         if (args == null || args.length < 3) {
-            System.err.println("Erro: parâmetros insuficientes para operação VALIDATE");
+            logger.error("Erro: parâmetros insuficientes para operação VALIDATE");
             return false;
         }
 
         // Validar se o conteúdo não está vazio
         String content = args[1];
         if (content == null || content.trim().isEmpty()) {
-            System.err.println("Erro: conteúdo a validar não pode estar vazio");
+            logger.error("Erro: conteúdo a validar não pode estar vazio");
             return false;
         }
 
         // Validar se a assinatura não está vazia
         String signature = args[2];
         if (signature == null || signature.trim().isEmpty()) {
-            System.err.println("Erro: assinatura não pode estar vazia");
+            logger.error("Erro: assinatura não pode estar vazia");
             return false;
         }
 

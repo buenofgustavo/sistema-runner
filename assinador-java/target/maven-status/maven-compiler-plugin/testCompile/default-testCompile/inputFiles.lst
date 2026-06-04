@@ -1,4 +1,5 @@
-C:\Users\Gustavo Bueno\Documents\GitHub\sistema-runner\assinador-java\src\test\java\com\kyriosdata\assinador\FakeSignatureServiceTest.java
-C:\Users\Gustavo Bueno\Documents\GitHub\sistema-runner\assinador-java\src\test\java\com\kyriosdata\assinador\validations\SignRequestValidatorTest.java
-C:\Users\Gustavo Bueno\Documents\GitHub\sistema-runner\assinador-java\src\test\java\com\kyriosdata\assinador\validations\ValidateRequestValidatorTest.java
-C:\Users\Gustavo Bueno\Documents\GitHub\sistema-runner\assinador-java\src\test\java\com\kyriosdata\assinador\web\AssinadorControllerTest.java
+C:\Users\projetos\Documents\projetos\sistema-runner\assinador-java\src\test\java\com\kyriosdata\assinador\web\AssinadorControllerTest.java
+C:\Users\projetos\Documents\projetos\sistema-runner\assinador-java\src\test\java\com\kyriosdata\assinador\validations\ValidateRequestValidatorTest.java
+C:\Users\projetos\Documents\projetos\sistema-runner\assinador-java\src\test\java\com\kyriosdata\assinador\FakeSignatureServiceTest.java
+C:\Users\projetos\Documents\projetos\sistema-runner\assinador-java\src\test\java\com\kyriosdata\assinador\validations\SignRequestValidatorTest.java
+C:\Users\projetos\Documents\projetos\sistema-runner\assinador-java\src\test\java\com\kyriosdata\assinador\web\InactivityShutdownManagerTest.java

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -38,11 +39,21 @@ func newServerStartCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			url := fmt.Sprintf("http://localhost:%s/api/health", port)
 			
-			// 1. Detectar se já existe instância rodando
-			if isServerRunning(url) {
-				fmt.Fprintf(cmd.OutOrStdout(), "Status: Servidor já está em execução na porta %s\n", port)
-				return nil
+			// 1. Verificar se a porta está em uso
+			ln, err := net.Listen("tcp", ":"+port)
+			if err != nil {
+				// Porta está ocupada. Vamos verificar se é o nosso Assinador.
+				if isServerRunning(url) {
+					if !Quiet {
+						fmt.Fprintf(cmd.OutOrStdout(), "Status: Servidor já está em execução na porta %s\n", port)
+					}
+					return nil
+				}
+				// É outro processo ocupando a porta!
+				return fmt.Errorf("falha ao iniciar servidor: a porta %s ja esta sendo utilizada por outro processo no sistema", port)
 			}
+			// Porta livre, liberar e prosseguir
+			_ = ln.Close()
 
 			// 2. Localizar java
 			javaPath, err := findJava()
@@ -81,7 +92,9 @@ func newServerStartCmd() *cobra.Command {
 				return fmt.Errorf("falha ao iniciar o processo Java: %w", err)
 			}
 
-			fmt.Fprintf(cmd.OutOrStdout(), "Iniciando o Assinador na porta %s (timeout de inatividade: %s min)...\n", port, shutdownAfter)
+			if !Quiet {
+				fmt.Fprintf(cmd.OutOrStdout(), "Iniciando o Assinador na porta %s (timeout de inatividade: %s min)...\n", port, shutdownAfter)
+			}
 
 			// 5. Aguardar até 5 segundos para confirmar a inicialização
 			success := false
@@ -94,9 +107,11 @@ func newServerStartCmd() *cobra.Command {
 			}
 
 			if success {
-				fmt.Fprintf(cmd.OutOrStdout(), "Status: Servidor iniciado com sucesso e ouvindo na porta %s\n", port)
+				if !Quiet {
+					fmt.Fprintf(cmd.OutOrStdout(), "Status: Servidor iniciado com sucesso e ouvindo na porta %s\n", port)
+				}
 			} else {
-				fmt.Fprintf(cmd.OutOrStdout(), "Status: Servidor iniciado, mas não respondeu ao teste de saúde no tempo esperado\n")
+				return fmt.Errorf("servidor iniciado, mas nao respondeu ao teste de saude na porta %s", port)
 			}
 
 			return nil

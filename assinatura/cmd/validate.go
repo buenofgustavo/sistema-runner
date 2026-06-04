@@ -18,6 +18,17 @@ func newValidateCmd(invoker Invoker) *cobra.Command {
 		Use:   "validate",
 		Short: "Valida assinatura digital de um artefato",
 		Long:  `Executa o assinador.jar para validar assinatura digital de um arquivo.`,
+		Example: `  # Validar assinatura no modo servidor (padrão)
+  assinatura validate --input documento.pdf --signature documento.sig
+
+  # Validar assinatura usando uma porta específica de servidor
+  assinatura validate --input documento.pdf --signature documento.sig --port 9090
+
+  # Validar no modo local (sem subir servidor)
+  assinatura validate --mode local --input documento.pdf --signature documento.sig --jar tools/assinador.jar
+
+  # Validar de forma silenciosa (quiet)
+  assinatura validate --input documento.pdf --signature documento.sig -q`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var activeInvoker Invoker = invoker
 			if mode == "server" {
@@ -28,9 +39,13 @@ func newValidateCmd(invoker Invoker) *cobra.Command {
 			output, err := activeInvoker.Run(jarPath, javaArgs)
 
 			if err != nil {
-				if strings.Contains(err.Error(), "exit status") {
-					fmt.Fprintf(cmd.OutOrStdout(), "Status: assinatura INVALIDA\n")
-					if strings.TrimSpace(output) != "" {
+				if strings.Contains(err.Error(), "exit status") || (Verbose && strings.TrimSpace(output) != "") {
+					if !Quiet {
+						fmt.Fprintf(cmd.OutOrStdout(), "Status: assinatura INVALIDA\n")
+					} else {
+						fmt.Fprintf(cmd.OutOrStdout(), "Status: assinatura INVALIDA\n")
+					}
+					if Verbose && strings.TrimSpace(output) != "" {
 						fmt.Fprintf(cmd.OutOrStdout(), "Detalhes:\n%s\n", strings.TrimSpace(output))
 					}
 					return nil
@@ -38,10 +53,15 @@ func newValidateCmd(invoker Invoker) *cobra.Command {
 				return fmt.Errorf("erro ao validar assinatura: %w", err)
 			}
 
-			fmt.Fprintf(cmd.OutOrStdout(), "Status: assinatura VALIDA\n")
-			fmt.Fprintf(cmd.OutOrStdout(), "Arquivo: %s\n", inputPath)
-			fmt.Fprintf(cmd.OutOrStdout(), "Assinatura: %s\n", signaturePath)
-			if strings.TrimSpace(output) != "" {
+			if !Quiet {
+				fmt.Fprintf(cmd.OutOrStdout(), "Status: assinatura VALIDA\n")
+				fmt.Fprintf(cmd.OutOrStdout(), "Arquivo: %s\n", inputPath)
+				fmt.Fprintf(cmd.OutOrStdout(), "Assinatura: %s\n", signaturePath)
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Status: assinatura VALIDA\n")
+			}
+			
+			if Verbose && strings.TrimSpace(output) != "" {
 				fmt.Fprintf(cmd.OutOrStdout(), "Detalhes:\n%s\n", strings.TrimSpace(output))
 			}
 

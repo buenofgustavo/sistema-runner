@@ -69,6 +69,7 @@ func TestSignCommandMapsParameters(t *testing.T) {
 
 	err := ExecuteWithArgs([]string{
 		"sign",
+		"--mode", "local",
 		"--jar", "tools/assinador.jar",
 		"--input", "entrada.pdf",
 		"--output", "entrada.sig",
@@ -98,6 +99,7 @@ func TestValidateInvalidSignatureReadableOutput(t *testing.T) {
 
 	err := ExecuteWithArgs([]string{
 		"validate",
+		"--mode", "local",
 		"--input", "entrada.pdf",
 		"--signature", "entrada.sig",
 	}, out, errOut, m)
@@ -117,6 +119,7 @@ func TestValidateCommandMapsParameters(t *testing.T) {
 
 	err := ExecuteWithArgs([]string{
 		"validate",
+		"--mode", "local",
 		"--jar", "tools/assinador.jar",
 		"--input", "entrada.pdf",
 		"--signature", "entrada.sig",

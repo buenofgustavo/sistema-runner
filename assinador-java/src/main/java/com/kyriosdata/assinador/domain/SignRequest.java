@@ -20,6 +20,9 @@ import java.util.List;
  */
 public class SignRequest {
 
+    // Original content to sign (basic CLI flow)
+    private String content;
+
     // Bundle FHIR (JSON)
     private String bundleJson;
 
@@ -60,20 +63,12 @@ public class SignRequest {
         this.bundleJson = bundleJson;
     }
 
-    /**
-     * Backwards-compatible accessor used by older code paths that treated
-     * `content` as the bundle JSON string.
-     */
     public String getContent() {
-        return this.bundleJson;
+        return this.content;
     }
 
-    /**
-     * Backwards-compatible mutator used by older code paths that pass the
-     * bundle JSON as `content`.
-     */
     public void setContent(String content) {
-        this.bundleJson = content;
+        this.content = content;
     }
 
     public String getProvenanceJson() {

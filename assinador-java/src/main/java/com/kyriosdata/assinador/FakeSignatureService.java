@@ -40,22 +40,22 @@ public class FakeSignatureService implements SignatureService {
             return new SignatureResponse(null, false, "Requisição inválida");
         }
 
+        // Se contiver content, tratamos como o fluxo CLI legível original
+        if (request.getContent() != null && !request.getContent().isEmpty()) {
+            if (request.getSignature() == null || request.getSignature().isEmpty()) {
+                return new SignatureResponse(null, false, "Parâmetro 'signature' inválido ou ausente");
+            }
+            boolean isValid = FAKE_SIGNATURE.equals(request.getSignature());
+            return new SignatureResponse(request.getSignature(), isValid, isValid ? "Assinatura é válida" : "Assinatura é inválida");
+        }
+
         // Se for validação avançada FHIR
         if (request.getJwsBase64() != null && !request.getJwsBase64().isEmpty()) {
             // Em simulação, consideramos válidos JWS estruturalmente corretos
             return new SignatureResponse(request.getJwsBase64(), true, "Assinatura é válida (simulada)");
         }
 
-        // Fluxo CLI legível original
-        if (request.getContent() == null || request.getContent().isEmpty()) {
-            return new SignatureResponse(null, false, "Parâmetro 'content' inválido ou ausente");
-        }
-        if (request.getSignature() == null || request.getSignature().isEmpty()) {
-            return new SignatureResponse(null, false, "Parâmetro 'signature' inválido ou ausente");
-        }
-        
-        boolean isValid = FAKE_SIGNATURE.equals(request.getSignature());
-        return new SignatureResponse(request.getSignature(), isValid, isValid ? "Assinatura é válida" : "Assinatura é inválida");
+        return new SignatureResponse(null, false, "Parâmetro 'content' ou 'jwsBase64' inválido ou ausente");
     }
 
     private String generateSimulatedJws(SignRequest request) {

@@ -5,6 +5,7 @@ import com.kyriosdata.assinador.SignatureService;
 import com.kyriosdata.assinador.domain.SignRequest;
 import com.kyriosdata.assinador.domain.SignatureResponse;
 import com.kyriosdata.assinador.domain.ValidateRequest;
+import com.kyriosdata.assinador.validations.SignatureParamsValidation;
 import com.kyriosdata.assinador.validations.SignRequestValidator;
 import com.kyriosdata.assinador.validations.ValidateRequestValidator;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ class AssinadorControllerTest {
 
     @MockitoBean
     private SignatureService signatureService;
+
+    @MockitoBean
+    private SignatureParamsValidation signatureParamsValidation;
 
     @MockitoBean
     private SignRequestValidator signRequestValidator;

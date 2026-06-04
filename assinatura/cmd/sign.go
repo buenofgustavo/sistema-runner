@@ -18,6 +18,17 @@ func newSignCmd(invoker Invoker) *cobra.Command {
 		Use:   "sign",
 		Short: "Cria assinatura digital de um artefato",
 		Long:  `Executa o assinador.jar para criar assinatura digital de um arquivo.`,
+		Example: `  # Assinar arquivo no modo servidor (padrão)
+  assinatura sign --input documento.pdf --output documento.sig
+
+  # Assinar usando uma porta específica de servidor
+  assinatura sign --input documento.pdf --output documento.sig --port 9090
+
+  # Assinar no modo local (sem subir servidor)
+  assinatura sign --mode local --input documento.pdf --output documento.sig --jar tools/assinador.jar
+
+  # Assinar de forma silenciosa (quiet)
+  assinatura sign --input documento.pdf --output documento.sig -q`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var activeInvoker Invoker = invoker
 			if mode == "server" {
@@ -33,10 +44,15 @@ func newSignCmd(invoker Invoker) *cobra.Command {
 				return fmt.Errorf("erro ao criar assinatura: %w", err)
 			}
 
-			fmt.Fprintf(cmd.OutOrStdout(), "Status: assinatura criada com sucesso\n")
-			fmt.Fprintf(cmd.OutOrStdout(), "Entrada: %s\n", inputPath)
-			fmt.Fprintf(cmd.OutOrStdout(), "Saida: %s\n", outputPath)
-			if strings.TrimSpace(output) != "" {
+			if !Quiet {
+				fmt.Fprintf(cmd.OutOrStdout(), "Status: assinatura criada com sucesso\n")
+				fmt.Fprintf(cmd.OutOrStdout(), "Entrada: %s\n", inputPath)
+				fmt.Fprintf(cmd.OutOrStdout(), "Saida: %s\n", outputPath)
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Status: assinatura criada com sucesso\n")
+			}
+
+			if Verbose && strings.TrimSpace(output) != "" {
 				fmt.Fprintf(cmd.OutOrStdout(), "Detalhes:\n%s\n", strings.TrimSpace(output))
 			}
 			return nil

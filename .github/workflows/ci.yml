@@ -78,6 +78,9 @@ jobs:
       - name: Download Dependencies
         run: go mod download
 
+      - name: Run Go Tests
+        run: go test -v ./...
+
       - name: Extract Version
         id: version
         shell: bash
