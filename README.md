@@ -48,7 +48,30 @@ go build -o assinatura.exe main.go
 
 ## 🚀 Como Executar o Projeto
 
+Para executar o utilitário, você pode compilar os fontes ou simplesmente **baixar os executáveis da última Release**:
+
+1. Vá em [Releases](https://github.com/buenofgustavo/sistema-runner/releases) e baixe:
+   - O executável correspondente à sua plataforma (ex.: `assinatura-v0.0.8-windows-amd64.exe` para Windows).
+   - O arquivo `assinador.jar`.
+2. Para facilitar a digitação dos comandos, **renomeie o executável do CLI** para `assinatura` (ou `assinatura.exe` no Windows).
+3. Mantenha o `assinador.jar` e o executável no mesmo diretório.
+
 A CLI foi projetada para rodar de forma transparente. Se o Java 21+ não estiver configurado no PATH ou no `JAVA_HOME`, a CLI irá **baixar e provisionar automaticamente uma versão portátil do JRE 21 (Adoptium/Temurin)** na pasta `~/.assinatura/jre`.
+
+### Preparando um arquivo para teste
+Antes de rodar os comandos, crie um arquivo de texto de entrada chamado `dado.txt` usando o comando correspondente ao seu terminal:
+* **No PowerShell (Windows)**:
+  ```powershell
+  Set-Content -Path dado.txt -Value "Texto de teste para assinar e validar."
+  ```
+* **No Prompt do Windows (cmd)**:
+  ```cmd
+  echo Texto de teste para assinar e validar. > dado.txt
+  ```
+* **No Linux / macOS**:
+  ```bash
+  echo "Texto de teste para assinar e validar." > dado.txt
+  ```
 
 ### Comandos Básicos (Modo Servidor / Warm Start)
 Por padrão, a CLI sobe o servidor HTTP em background automaticamente na primeira execução:
@@ -114,7 +137,51 @@ mvn test
 
 ## 🌐 Testando a API REST (Modo Avançado FHIR)
 
-Quando o `assinador.jar` está rodando em modo servidor (porta `8080`), ele expõe endpoints REST que podem ser testados com clientes HTTP (como `cURL` ou PowerShell `Invoke-RestMethod`).
+Quando o `assinador.jar` está rodando em modo servidor (porta `8080`), ele expõe endpoints REST que validam rigidamente as estruturas de dados no formato FHIR. Você pode testar esse fluxo avançado usando clientes HTTP como cURL ou scripts do PowerShell.
+
+### Teste Automatizado no PowerShell (Windows)
+Se você estiver utilizando o PowerShell, pode rodar o bloco de script abaixo para executar o fluxo avançado completo de forma automatizada (ele gerará a assinatura, capturará o JWS retornado no campo `signature`, validará contra a política de assinatura e salvará o resultado no arquivo `retorno_validacao.json`):
+
+```powershell
+# 1. Preparar o payload para criação da assinatura avançada
+$signPayload = @{
+    bundleJson = "{}"
+    provenanceJson = "{}"
+    material = '{"type":"PEM","key":"CHAVE_PRIVADA_MOCK"}'
+    certChain = @("dGVzdGU=")
+    referenceTimestamp = 1751328005
+    strategy = "iat"
+    signaturePolicy = "https://fhir.saude.go.gov.br/r4/seguranca/ImplementationGuide/br.go.ses.seguranca|1.0.0"
+    operationalConfig = "{}"
+} | ConvertTo-Json -Depth 5
+
+Write-Host "1. Solicitando Assinatura Avançada..." -ForegroundColor Cyan
+$signResponse = Invoke-RestMethod -Uri "http://localhost:8080/api/sign" -Method Post -Body $signPayload -ContentType "application/json"
+$jws = $signResponse.signature
+
+Write-Host "Assinatura JWS gerada com sucesso!`n" -ForegroundColor Green
+
+# 2. Preparar o payload para validação usando o JWS gerado
+$validatePayload = @{
+    jwsBase64 = $jws
+    referenceTimestamp = 1751328005
+    signaturePolicy = "https://fhir.saude.go.gov.br/r4/seguranca/ImplementationGuide/br.go.ses.seguranca|1.0.0"
+    operationalConfig = "{}"
+} | ConvertTo-Json -Depth 5
+
+Write-Host "2. Solicitando Validação Avançada..." -ForegroundColor Cyan
+$validateResponse = Invoke-RestMethod -Uri "http://localhost:8080/api/validate" -Method Post -Body $validatePayload -ContentType "application/json"
+
+# 3. Converter o objeto da resposta para JSON e salvar no arquivo
+$validateResponse | ConvertTo-Json | Set-Content -Path "retorno_validacao.json"
+
+Write-Host "3. Resultado da validação salvo com sucesso em 'retorno_validacao.json'!" -ForegroundColor Green
+Write-Host "`nConteúdo do arquivo salvo:" -ForegroundColor Yellow
+Get-Content -Path "retorno_validacao.json"
+```
+
+### Teste Manual via cURL
+Caso queira testar de forma isolada e manual:
 
 ### 1. Criar Assinatura Avançada (POST `/api/sign`)
 Envie um payload contendo a estrutura de transação FHIR:
