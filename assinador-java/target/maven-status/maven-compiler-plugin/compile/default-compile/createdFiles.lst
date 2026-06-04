@@ -1,0 +1,16 @@
+com\kyriosdata\assinador\AssinadorApplication.class
+com\kyriosdata\assinador\validations\SignatureParamsValidation.class
+com\kyriosdata\assinador\web\AssinadorController.class
+com\kyriosdata\assinador\FakeSignatureService.class
+com\kyriosdata\assinador\web\GlobalExceptionHandler$OperationOutcome.class
+com\kyriosdata\assinador\validations\SignRequestValidator.class
+com\kyriosdata\assinador\domain\SignRequest.class
+com\kyriosdata\assinador\validations\ValidateRequestValidator.class
+com\kyriosdata\assinador\domain\SignatureResponse.class
+com\kyriosdata\assinador\web\InactivityShutdownManager.class
+com\kyriosdata\assinador\web\GlobalExceptionHandler$Issue.class
+com\kyriosdata\assinador\web\GlobalExceptionHandler.class
+com\kyriosdata\assinador\enums\Operations.class
+com\kyriosdata\assinador\domain\ValidateRequest.class
+com\kyriosdata\assinador\web\GlobalExceptionHandler$Details.class
+com\kyriosdata\assinador\SignatureService.class
