@@ -127,6 +127,9 @@ Para executar a assinatura ou validação de forma direta em uma nova instância
 
 Quando o `assinador.jar` está rodando em modo servidor (porta `8080`), ele expõe endpoints REST que validam rigidamente as estruturas de dados no formato FHIR. Você pode testar esse fluxo avançado usando clientes HTTP como cURL ou scripts do PowerShell.
 
+### Teste pelo postman
+Para testar pelo postman, abra o postman e importe a collection que está no arquivo `assinador-postman-collection.json` e faça as requisições.
+
 ### Teste Automatizado no PowerShell (Windows)
 Se você estiver utilizando o PowerShell, pode rodar o bloco de script abaixo para executar o fluxo avançado completo de forma automatizada (ele gerará a assinatura, capturará o JWS retornado no campo `signature`, validará contra a política de assinatura e salvará o resultado no arquivo `retorno_validacao.json`):
 
