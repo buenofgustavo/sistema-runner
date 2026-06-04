@@ -102,6 +102,10 @@ Você pode gerenciar manualmente o servidor em background:
   ```bash
   ./assinatura server stop
   ```
+* **Ligar o servidor**:
+  ```bash
+  ./assinatura server start
+  ```
 
 ### Comando em Modo Local (Cold Start)
 Para executar a assinatura ou validação de forma direta em uma nova instância da JVM, utilize a flag `--mode local`:
@@ -116,22 +120,6 @@ Para executar a assinatura ou validação de forma direta em uma nova instância
   ./assinatura sign -q --input dado.txt --output dado.sig
   ```
 * **Verbose (`--verbose` ou `-v`)**: Mostra logs detalhados e a saída crua do JAR Java para fins de depuração.
-
----
-
-## 🧪 Como Executar os Testes
-
-### Executar os testes automatizados da CLI Go
-```bash
-cd assinatura
-go test -v ./...
-```
-
-### Executar os testes automatizados do Assinador Java (JUnit)
-```bash
-cd assinador-java
-mvn test
-```
 
 ---
 
@@ -231,6 +219,22 @@ Resposta de sucesso:
   "valid": true,
   "message": "Assinatura é válida (simulada)"
 }
+```
+
+---
+
+## 🧪 Como Executar os Testes
+
+### Executar os testes automatizados da CLI Go
+```bash
+cd assinatura
+go test -v ./...
+```
+
+### Executar os testes automatizados do Assinador Java (JUnit)
+```bash
+cd assinador-java
+mvn test
 ```
 
 ---
