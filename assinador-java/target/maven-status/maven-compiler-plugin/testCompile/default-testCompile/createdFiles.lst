@@ -1,0 +1,5 @@
+com\kyriosdata\assinador\validations\SignRequestValidatorTest.class
+com\kyriosdata\assinador\FakeSignatureServiceTest.class
+com\kyriosdata\assinador\web\InactivityShutdownManagerTest.class
+com\kyriosdata\assinador\validations\ValidateRequestValidatorTest.class
+com\kyriosdata\assinador\web\AssinadorControllerTest.class

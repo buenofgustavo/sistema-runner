@@ -1,40 +1,59 @@
-# Sistema Runner
+# Sistema Runner - Trabalho Prático
 
-Especificação do trabalho prático da disciplina Implementação e Integração (2026-01). Esta é a orientação para o que precisa ser feito:
+Este projeto implementa o **Sistema Runner**, uma interface unificada e simplificada para execução do Assinador digital, desenvolvida como trabalho prático da disciplina de Implementação e Integração (2026).
 
-- [Especificação](especificacao.md)
-- [Design](design.md)
-- [Plano de implementação](docs/plano-revisitado-v2.md)
+## Especificações de Referência
+* A especificação formal e requisitos do projeto estão definidos no arquivo [especificacao_runner.md](especificacao_runner.md) sob o commit fixo [1cae2dfab95b072baa5c7a38063801cc6e2bce81](https://github.com/kyriosdata/runner/commit/1cae2dfab95b072baa5c7a38063801cc6e2bce81).
 
-# O que está acontecendo... 
+## Arquitetura
+O sistema é estruturado em dois módulos principais:
+1. **assinatura (CLI Go)**: Interface multiplataforma de linha de comandos desenvolvida em Go, responsável por interagir com o usuário e gerenciar o ciclo de vida do servidor do assinador.
+2. **assinador-java (JAR Java)**: Aplicação executável Java que valida rigorosamente os parâmetros de entrada e executa/simula a validação e criação de assinaturas digitais.
 
-- Temos uma especificação e um projeto inicial (fornecidos acima).
-- Foi considerado "pronto". Então partimos para um [plano preliminar](./docs/plano-preliminar.md). Apenas um esboço inicial, especulação, brainstorming inicial.
-- Ao fazer uma análise do plano preliminar encontramos, naturalmente, oportunidades de melhoria. Por exemplo, a especificação contém "épicos", são "gigantes", que precisam ser divididos em histórias menores, com entregáveis claros. No entanto, não quis alterar os requisitos iniciais. Então o plano foi revisado. O plano revisado é apresentado [aqui](./docs/plano-revisitado.md). Até aqui tudo humano, mas ainda ficam claras as oportunidades de melhoria.
-- O ChatGPT com um prompt visando ajudar a dividir as histórias e organizá-las em sprints, contemplando o que está no plano revisitado resultou no [Plano Revisitado #2](./docs/plano-revisitado-v2.md). Eu teria levado muito, muito mais tempo para fazer o mesmo, mas também não faria igual. De qualquer forma, é uma versão que serve como novo ponto de partida para o planejamento da primeira iteração (sprint). 
-- Em essência, o [plano revisitado](./docs/plano-revisitado.md) refinou os requisitos (épicos) em itens menores com entregáveis claros, e o [Plano Revisitado #2](./docs/plano-revisitado-v2.md) formalizou esses itens como histórias de usuário organizadas em sprints orientadas a valor. Ou seja, um esforço de engenharia de requisitos e parte de gerenciamento de projeto.
-- Estes ajustes permitem agora que o planejamento da construção possa ser realizado com a identificação de tarefas operacionais.
+A CLI Go se integra com o JAR Java por meio de dois modos de invocação:
+* **Modo Local (Cold Start)**: Invocação direta executando `java -jar assinador.jar <comando>`.
+* **Modo Servidor (Warm Start - Padrão)**: Inicia o JAR como um servidor HTTP local persistente e realiza a integração via chamadas REST (`POST /api/sign` e `POST /api/validate`).
 
+## Como Construir os Projetos
 
-# O que está rolando... (desde 18/03/2026)
+### Assinador Java
+Pré-requisitos: JDK 21+ e Maven instalados.
+```bash
+cd assinador-java
+mvn clean package
+```
+O executável resultante estará localizado em `assinador-java/target/assinador-java-1.0.0-SNAPSHOT.jar` (que pode ser copiado ou referenciado como `assinador.jar`).
 
-- Agora é o momento do planejamento da construção, ou pelo menos da primeira iteração. O que você vai fazer?
-- Veja [aqui](./docs/planejamento.md) alguma orientação.
+### CLI Go
+Pré-requisitos: Go 1.26+ instalado.
+```bash
+cd assinatura
+go build -o assinatura.exe .
+```
 
-# O que está rolando... (desde 11/03/2026)
+## Como Executar os Testes
 
-- O Princípio de Kerckhoffs diz que: "um sistema criptográfico deve permanecer seguro mesmo que tudo sobre o sistema seja público, exceto a chave privada".
+### Testes Java (JUnit)
+```bash
+cd assinador-java
+mvn test
+```
 
-# O que está rolando... (desde 10/03/2026)
+### Testes Go
+```bash
+cd assinatura
+go test ./...
+```
 
-- No primeiro encontra a [especificação](https://github.com/kyriosdata/runner/blob/v0.0.1/contexto.md) continha, por exemplo, requisitos sendo tratados como objetivos específicos, logo no início. Isso tinha que mudar. Na versão [melhorada](https://github.com/kyriosdata/runner/blob/v0.0.2/contexto.md), as seções foram alteradas e requisitos foram definidos na forma de user stories.
+## Uso Rápido da CLI
+```bash
+# Versão
+./assinatura version
 
-- Contudo, tenho 100% de certeza que ainda há muito para melhorar, inclusive na compreensão do próprio problema, antes mesmo até de trabalhar com uma estratégia como [SMART](https://thebaguide.com/blog/a-good-requirement-is-a-smart-requirement/) ou [INVEST](https://www.boost.co.nz/blog/2021/10/invest-criteria) para ajudar na caracterização dos requisitos. 
+# Criação de assinatura (Modo Servidor por padrão)
+./assinatura sign --input arquivo.pdf --output assinatura.sig
 
-- Na versão v0.0.2 vemos critérios de aceitação, o que está alinhado com o BDD (Behavior Driven Development). Você pode consultar BDD na perspectiva de uma ferramenta concreta e real, o [Cucumber](https://cucumber.io/docs/).
-
-- Apesar dos critérios, ainda não há uma definição clara de "done" para cada requisito, o que é fundamental. Esta definição de "done" é chamada, muitas vezes, de DoD (Definition of Done). Não ter ainda esta definição é natural, pois os requisitos ainda não atendem ao DoR (Definition of Ready), ou seja, ainda não estão prontos, conforme já mencionado.
-
-- Quando olhamos para o [documento](https://github.com/kyyriosdata/runner/blob/v0.0.2/contexto.md), vemos que ele reúne requisitos e design. Em consequência, vamos dividir isso em dois documentos na v0.0.3. 
-
-- Em tempo, conforme o SWEBOK, o que é considerado construção depende do modelo de ciclo de vida adotado, por exemplo, em modelos mais lineares, construção é precedida por requisitos e design, e sucedida por testes. Embora em muitos casos inclua codificação e depuração, também envolve planejamento, projeto detalhado, testes de unidade e testes de integração. 
+# Validação de assinatura
+./assinatura validate --input arquivo.pdf --signature assinatura.sig
+```
+Consulte as opções completas executando `./assinatura --help`.
