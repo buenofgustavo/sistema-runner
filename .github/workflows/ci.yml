@@ -12,8 +12,38 @@ env:
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
 jobs:
-  build:
-    name: Build Multi-plataforma
+  build-java:
+    name: Build Assinador Java
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build and Test with Maven
+        run: |
+          cd assinador-java
+          mvn clean package
+
+      - name: Rename JAR
+        run: |
+          cp assinador-java/target/assinador-java-1.0.0-SNAPSHOT.jar assinador-java/target/assinador.jar
+
+      - name: Upload Java JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: assinador-jar
+          path: assinador-java/target/assinador.jar
+          retention-days: 1
+
+  build-go:
+    name: Build Go CLI
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,28 +57,29 @@ jobs:
           - goos: darwin
             goarch: amd64
             ext: ""
-
     defaults:
       run:
-        working-directory: projetos/assinatura
-
+        working-directory: assinatura
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Go 1.25
+      - name: Setup Go 1.26
         uses: actions/setup-go@v5
         with:
-          go-version: '1.25'
-          cache-dependency-path: projetos/assinatura/go.sum
+          go-version: '1.26'
+          cache-dependency-path: assinatura/go.sum
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.5.0
 
       - name: Download Dependencies
         run: go mod download
+
+      - name: Run Go Tests
+        run: go test -v ./...
 
       - name: Extract Version
         id: version
@@ -66,13 +97,13 @@ jobs:
             echo "TAG_EXISTS=false" >> $GITHUB_ENV
           fi
 
-      - name: Build
+      - name: Build Binary
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-        run: go build -v -o assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} .
+        run: go build -v -ldflags "-X github.com/kyriosdata/assinatura/cmd.gitCommit=${{ github.sha }}" -o assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} .
 
-      - name: Checksum and Sign Artifacts
+      - name: Checksum and Sign Go Artifacts
         if: env.TAG_EXISTS == 'false'
         shell: bash
         run: |
@@ -87,26 +118,74 @@ jobs:
             --output-signature "$FILE.sig" \
             "$FILE"
 
-      - name: Upload Artifact
+      - name: Upload Go Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}
+          name: Go-CLI-${{ matrix.goos }}-${{ matrix.goarch }}
           path: |
-            projetos/assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}
-            projetos/assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.sha256*
-            projetos/assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.pem*
-            projetos/assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.sig*
+            assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}
+            assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.sha256*
+            assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.pem*
+            assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.sig*
           retention-days: 7
 
-      - name: Upload to GitHub Release & Auto Tag
+  release:
+    name: Create GitHub Release
+    needs: [build-java, build-go]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract Version
+        id: version
+        shell: bash
+        run: |
+          RAW_VERSION=$(grep -oP 'var version = "\K[^"]+' assinatura/cmd/version.go)
+          VERSION="v$RAW_VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          
+          if git ls-remote --tags origin | grep -q "refs/tags/$VERSION"; then
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+          fi
+
+      - name: Download Java JAR
+        if: env.TAG_EXISTS == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          name: assinador-jar
+          path: release-artifacts
+
+      - name: Download Go CLI Linux Artifacts
+        if: env.TAG_EXISTS == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          name: Go-CLI-linux-amd64
+          path: release-artifacts
+
+      - name: Download Go CLI Windows Artifacts
+        if: env.TAG_EXISTS == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          name: Go-CLI-windows-amd64
+          path: release-artifacts
+
+      - name: Download Go CLI Darwin Artifacts
+        if: env.TAG_EXISTS == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          name: Go-CLI-darwin-amd64
+          path: release-artifacts
+
+      - name: Publish GitHub Release & Tags
         uses: softprops/action-gh-release@v2
         if: env.TAG_EXISTS == 'false'
         with:
           tag_name: ${{ env.VERSION }}
           name: Release ${{ env.VERSION }}
           generate_release_notes: true
-          files: |
-            projetos/assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}
-            projetos/assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.sha256
-            projetos/assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.pem
-            projetos/assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.sig
+          files: release-artifacts/*
