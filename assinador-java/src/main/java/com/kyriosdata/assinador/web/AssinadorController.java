@@ -33,8 +33,10 @@ public class AssinadorController {
     public ResponseEntity<SignatureResponse> sign(@RequestBody SignRequest request) {
         shutdownManager.resetTimer();
         
-        // Validar rigorosamente conforme a especificação
-        signRequestValidator.validate(request);
+        // Validar rigorosamente conforme a especificação apenas se for fluxo avançado FHIR
+        if (request.getBundleJson() != null && !request.getBundleJson().isEmpty()) {
+            signRequestValidator.validate(request);
+        }
         
         // Executar a assinatura (simulação)
         SignatureResponse response = signatureService.sign(request);
@@ -45,8 +47,10 @@ public class AssinadorController {
     public ResponseEntity<SignatureResponse> validate(@RequestBody ValidateRequest request) {
         shutdownManager.resetTimer();
         
-        // Validar rigorosamente conforme a especificação
-        validateRequestValidator.validate(request);
+        // Validar rigorosamente conforme a especificação apenas se for fluxo avançado FHIR
+        if (request.getContent() == null || request.getContent().isEmpty()) {
+            validateRequestValidator.validate(request);
+        }
         
         // Executar a validação (simulação)
         SignatureResponse response = signatureService.validate(request);
