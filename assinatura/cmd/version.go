@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var version = "0.0.6"
+var version = "0.0.7"
 var gitCommit = "unknown"
 
 func newVersionCmd() *cobra.Command {
