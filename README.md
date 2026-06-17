@@ -242,6 +242,13 @@ mvn test
 
 ---
 
+## 🚀 Simulador CLI Go (`simulador`)
+
+As instruções detalhadas de instalação, compilação, execução e testes para a CLI do Simulador estão documentadas no arquivo [cli-simulador/README.md](cli-simulador/README.md).
+
+---
+
 ## ⚖️ Licença
 
 Este projeto está licenciado sob a Licença MIT - consulte o arquivo [LICENSE](LICENSE) para obter detalhes.
+

@@ -129,9 +129,90 @@ jobs:
             assinatura/assinatura-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.sig*
           retention-days: 7
 
+  build-simulador:
+    name: Build Go Simulator CLI
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+            ext: ""
+          - goos: windows
+            goarch: amd64
+            ext: ".exe"
+          - goos: darwin
+            goarch: amd64
+            ext: ""
+    defaults:
+      run:
+        working-directory: cli-simulador
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go 1.26
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.26'
+          cache-dependency-path: cli-simulador/go.sum
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.5.0
+
+      - name: Download Dependencies
+        run: go mod download
+
+      - name: Run Go Tests
+        run: go test -v ./...
+
+      - name: Extract Version
+        id: version
+        shell: bash
+        run: |
+          RAW_VERSION=$(grep -oP 'version\s*=\s*"\K[^"]+' cmd/version.go)
+          VERSION="v$RAW_VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          
+          if git ls-remote --tags origin | grep -q "refs/tags/$VERSION"; then
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+          fi
+
+      - name: Build Binary
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: go build -v -ldflags "-X github.com/kyriosdata/runner/cli-simulador/cmd.gitCommit=${{ github.sha }}" -o cli-simulador-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }} ./cmd/simulador/main.go
+
+      - name: Checksum and Sign Go Artifacts
+        if: env.TAG_EXISTS == 'false'
+        shell: bash
+        run: |
+          FILE="cli-simulador-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}"
+          sha256sum "$FILE" > "$FILE.sha256"
+          cosign sign-blob --yes \
+            --output-certificate "$FILE.pem" \
+            --output-signature "$FILE.sig" \
+            "$FILE"
+
+      - name: Upload Go Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Simulator-CLI-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: |
+            cli-simulador/cli-simulador-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}
+            cli-simulador/cli-simulador-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.sha256*
+            cli-simulador/cli-simulador-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.pem*
+            cli-simulador/cli-simulador-${{ env.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}.sig*
+          retention-days: 7
+
   release:
     name: Create GitHub Release
-    needs: [build-java, build-go]
+    needs: [build-java, build-go, build-simulador]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -179,6 +260,27 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Go-CLI-darwin-amd64
+          path: release-artifacts
+
+      - name: Download Go Simulator CLI Linux Artifacts
+        if: env.TAG_EXISTS == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          name: Simulator-CLI-linux-amd64
+          path: release-artifacts
+
+      - name: Download Go Simulator CLI Windows Artifacts
+        if: env.TAG_EXISTS == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          name: Simulator-CLI-windows-amd64
+          path: release-artifacts
+
+      - name: Download Go Simulator CLI Darwin Artifacts
+        if: env.TAG_EXISTS == 'false'
+        uses: actions/download-artifact@v4
+        with:
+          name: Simulator-CLI-darwin-amd64
           path: release-artifacts
 
       - name: Publish GitHub Release & Tags
