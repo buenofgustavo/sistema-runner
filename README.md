@@ -123,6 +123,29 @@ Para executar a assinatura ou validação de forma direta em uma nova instância
 
 ---
 
+## 🔒 Integridade e Segurança da Assinatura (Cosign)
+
+Todas as releases do utilitário de **Assinatura** são assinadas digitalmente via **Sigstore / Cosign** usando a modalidade *keyless* (sem chaves longas) vinculada ao certificado OIDC do GitHub Actions.
+
+Para verificar a integridade e autenticidade dos executáveis baixados na página de Releases:
+
+**1. Verificar Hash SHA-256 (Opcional):**
+```bash
+sha256sum -c assinatura-v2.0.0-windows-amd64.sha256
+```
+
+**2. Verificar Assinatura Cosign:**
+```bash
+cosign verify-blob \
+  --certificate assinatura-v2.0.0-windows-amd64.pem \
+  --signature assinatura-v2.0.0-windows-amd64.sig \
+  --certificate-identity-regexp "https://github.com/.*" \
+  --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+  assinatura-v2.0.0-windows-amd64.exe
+```
+
+---
+
 ## 🌐 Testando a API REST (Modo Avançado FHIR)
 
 Quando o `assinador.jar` está rodando em modo servidor (porta `8080`), ele expõe endpoints REST que validam rigidamente as estruturas de dados no formato FHIR. Você pode testar esse fluxo avançado usando clientes HTTP como cURL ou scripts do PowerShell.

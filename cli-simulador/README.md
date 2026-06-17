@@ -175,13 +175,13 @@ Todas as novas versões geradas pelo pipeline do GitHub Actions contam com:
 Para verificar a integridade localmente após o download:
 ```bash
 # Verificar checksum
-sha256sum -c cli-simulador-v1.2.0-windows-amd64.exe.sha256
+sha256sum -c cli-simulador-v2.0.0-windows-amd64.exe.sha256
 
 # Verificar assinatura OIDC com Cosign
 cosign verify-blob \
-  --certificate cli-simulador-v1.2.0-windows-amd64.pem \
-  --signature cli-simulador-v1.2.0-windows-amd64.sig \
+  --certificate cli-simulador-v2.0.0-windows-amd64.pem \
+  --signature cli-simulador-v2.0.0-windows-amd64.sig \
   --certificate-identity-regexp "https://github.com/.*" \
   --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
-  cli-simulador-v1.2.0-windows-amd64.exe
+  cli-simulador-v2.0.0-windows-amd64.exe
 ```
