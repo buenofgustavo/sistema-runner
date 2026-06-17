@@ -131,17 +131,17 @@ Para verificar a integridade e autenticidade dos executáveis baixados na págin
 
 **1. Verificar Hash SHA-256 (Opcional):**
 ```bash
-sha256sum -c assinatura-v2.0.0-windows-amd64.sha256
+sha256sum -c assinatura-v2.0.1-windows-amd64.sha256
 ```
 
 **2. Verificar Assinatura Cosign:**
 ```bash
 cosign verify-blob \
-  --certificate assinatura-v2.0.0-windows-amd64.pem \
-  --signature assinatura-v2.0.0-windows-amd64.sig \
+  --certificate assinatura-v2.0.1-windows-amd64.pem \
+  --signature assinatura-v2.0.1-windows-amd64.sig \
   --certificate-identity-regexp "https://github.com/.*" \
   --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
-  assinatura-v2.0.0-windows-amd64.exe
+  assinatura-v2.0.1-windows-amd64.exe
 ```
 
 ---

@@ -18,7 +18,7 @@ type HttpInvoker struct {
 
 func NewHttpInvoker(port string, jarPath string) *HttpInvoker {
 	if port == "" {
-		port = "8080"
+		port = "8081"
 	}
 	if jarPath == "" {
 		jarPath = "assinador.jar"

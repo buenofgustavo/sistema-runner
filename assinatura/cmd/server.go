@@ -119,7 +119,7 @@ func newServerStartCmd() *cobra.Command {
 	}
 
 	cmd.Flags().StringVar(&jarPath, "jar", "assinador.jar", "Caminho para o assinador.jar")
-	cmd.Flags().StringVar(&port, "port", "8080", "Porta para escutar as requisições")
+	cmd.Flags().StringVar(&port, "port", "8081", "Porta para escutar as requisições")
 	cmd.Flags().StringVar(&shutdownAfter, "shutdown-after", "30", "Minutos sem atividade para desligamento automático")
 
 	return cmd
@@ -159,7 +159,7 @@ func newServerStopCmd() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&port, "port", "8080", "Porta da instância do servidor a interromper")
+	cmd.Flags().StringVar(&port, "port", "8081", "Porta da instância do servidor a interromper")
 
 	return cmd
 }
@@ -199,7 +199,7 @@ func newServerStatusCmd() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&port, "port", "8080", "Porta do servidor a verificar")
+	cmd.Flags().StringVar(&port, "port", "8081", "Porta do servidor a verificar")
 
 	return cmd
 }

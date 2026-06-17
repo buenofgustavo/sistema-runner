@@ -237,7 +237,7 @@ public class AssinadorApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         boolean isServer = false;
-        String port = "8080";
+        String port = "8081";
         String shutdownAfter = "30";
 
         for (int i = 0; i < args.length; i++) {

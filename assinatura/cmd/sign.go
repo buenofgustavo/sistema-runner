@@ -63,7 +63,7 @@ func newSignCmd(invoker Invoker) *cobra.Command {
 	cmd.Flags().StringVar(&inputPath, "input", "", "Arquivo de entrada para assinatura")
 	cmd.Flags().StringVar(&outputPath, "output", "", "Arquivo de saida da assinatura")
 	cmd.Flags().StringVar(&mode, "mode", "server", "Modo de execucao: local ou server")
-	cmd.Flags().StringVar(&port, "port", "8080", "Porta do servidor a ser utilizada no modo server")
+	cmd.Flags().StringVar(&port, "port", "8081", "Porta do servidor a ser utilizada no modo server")
 	_ = cmd.MarkFlagRequired("input")
 	_ = cmd.MarkFlagRequired("output")
 
