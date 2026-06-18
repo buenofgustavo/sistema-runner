@@ -1,15 +1,6 @@
-# Sistema Runner
+# Assinatura CLI
 
-[![CI & Release](https://github.com/buenofgustavo/sistema-runner/actions/workflows/ci.yml/badge.svg)](https://github.com/buenofgustavo/sistema-runner/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Java: 21+](https://img.shields.io/badge/Java-21+-orange.svg)](https://adoptium.net/)
-[![Go: 1.26+](https://img.shields.io/badge/Go-1.26+-blue.svg)](https://go.dev/)
-
-O **Sistema Runner** é uma solução unificada e robusta projetada para simplificar a criação e validação de assinaturas digitais, ocultando a complexidade de configurações de ambiente (como Java Virtual Machine e portas de rede). Ele foi desenvolvido como trabalho prático da disciplina de Implementação e Integração (2026).
-
-A especificação de referência utilizada é mantida sob um commit fixo no arquivo [especificacao_runner.md](especificacao_runner.md).
-
----
+Ferramenta CLI desenvolvida em Go para ser o ponto de contato com o usuário para operações de assinatura digital e validação.
 
 ## 🏗️ Arquitetura Integrada
 
