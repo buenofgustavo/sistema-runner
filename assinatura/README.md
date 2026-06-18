@@ -22,29 +22,6 @@ O projeto adota uma arquitetura integrada dividida em dois componentes principai
 * **Modo Servidor (Warm Start - Padrão)**: O CLI Go inicia o `assinador.jar` como um servidor REST em background (porta padrão `8080`). Chamadas subsequentes são feitas via HTTP para `/api/sign` e `/api/validate`, eliminando o overhead de inicialização da JVM.
 * **Modo Local (Cold Start)**: O CLI Go invoca diretamente o `assinador.jar` via linha de comando (`java -jar assinador.jar ...`) para execuções esporádicas.
 
----
-
-## 🛠️ Requisitos de Sistema e Build
-
-Se você quiser compilar os binários do projeto a partir do código fonte, precisará de:
-
-* **Go 1.26+** (para o CLI)
-* **JDK 21+** e **Maven 3.8+** (para o Assinador Java)
-
-### Compilando o Assinador Java
-```bash
-cd assinador-java
-mvn clean package
-```
-O JAR gerado estará em `assinador-java/target/assinador-java-1.0.0-SNAPSHOT.jar`. Renomeie-o ou copie-o como `assinador.jar` no local de execução da sua CLI.
-
-### Compilando a CLI Go
-```bash
-cd assinatura
-go build -o assinatura.exe main.go
-```
-
----
 
 ## 🚀 Como Executar o Projeto
 
@@ -107,12 +84,6 @@ Você pode gerenciar manualmente o servidor em background:
   ./assinatura server start
   ```
 
-### Comando em Modo Local (Cold Start)
-Para executar a assinatura ou validação de forma direta em uma nova instância da JVM, utilize a flag `--mode local`:
-```bash
-./assinatura sign --mode local --jar assinador.jar --input dado.txt --output dado.sig
-./assinatura validate --mode local --jar assinador.jar --input dado.txt --signature dado.sig
-```
 
 ### Flags Globais de Verbose e Quiet
 * **Quiet (`--quiet` ou `-q`)**: Suprime mensagens informativas, exibindo apenas o status da operação:
@@ -261,6 +232,37 @@ go test -v ./...
 ```bash
 cd assinador-java
 mvn test
+```
+
+---
+
+### Comando em Modo Local (Cold Start)
+Para executar a assinatura ou validação de forma direta em uma nova instância da JVM, utilize a flag `--mode local`:
+```bash
+./assinatura sign --mode local --jar assinador.jar --input dado.txt --output dado.sig
+./assinatura validate --mode local --jar assinador.jar --input dado.txt --signature dado.sig
+```
+
+---
+
+## 🛠️ Requisitos de Sistema e Build
+
+Se você quiser compilar os binários do projeto a partir do código fonte, precisará de:
+
+* **Go 1.26+** (para o CLI)
+* **JDK 21+** e **Maven 3.8+** (para o Assinador Java)
+
+### Compilando o Assinador Java
+```bash
+cd assinador-java
+mvn clean package
+```
+O JAR gerado estará em `assinador-java/target/assinador-java-1.0.0-SNAPSHOT.jar`. Renomeie-o ou copie-o como `assinador.jar` no local de execução da sua CLI.
+
+### Compilando a CLI Go
+```bash
+cd assinatura
+go build -o assinatura.exe main.go
 ```
 
 ---
